@@ -6,20 +6,20 @@ import LogoBar from "./components/logo-bar/LogoBar";
 import MainMenu from "./components/main-menu/MainMenu";
 import MainPanel from "./components/main-panel/MainPanel";
 
-const AppWrapper = styled.div`
+const Wrapper = styled.div`
     width: 100vw;
     height: 100vh;
 `;
 
 function App() {
     return (
-        <AppWrapper>
+        <Wrapper>
             <Background />
             <InfoBar />
             <LogoBar />
             <MainMenu />
             <MainPanel />
-        </AppWrapper>
+        </Wrapper>
     );
 }
 

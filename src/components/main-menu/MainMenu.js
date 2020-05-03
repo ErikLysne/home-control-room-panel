@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from "./../button/Button";
 
 const Wrapper = styled.div`
-    width: 460px;
+    width: 96%;
     height: 120px;
     position: absolute;
     top: 80px;

@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import LightSlider from "./../light-slider/LightSlider";
 
 const Wrapper = styled.div`
-    width: 460px;
+    width: 96%;
     height: 460px;
     position: absolute;
     top: 220px;
@@ -14,7 +15,11 @@ const Wrapper = styled.div`
 `;
 
 function MainPanel() {
-    return <Wrapper></Wrapper>;
+    return (
+        <Wrapper>
+            <LightSlider />
+        </Wrapper>
+    );
 }
 
 export default MainPanel;
