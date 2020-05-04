@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import hueDiscovery from "./hue/hue-discovery";
 
 const app = express();
 
@@ -12,3 +13,5 @@ app.get("/", (req, res) => {
 app.listen(8080);
 
 console.log("Started server on port 8080");
+
+hueDiscovery.linkWithHueBridge();

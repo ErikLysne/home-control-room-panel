@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import LightSlider from "./../light-slider/LightSlider";
+import LightSlider from "../light-slider/LightSlider";
 
 const Wrapper = styled.div`
     width: 96%;
