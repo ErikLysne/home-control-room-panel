@@ -7,7 +7,7 @@ import readline from "readline";
 
 const hue = hueApi.v3;
 
-exports.discoverHueBridgeIpAddress = function (timeout) {
+const discoverBridgeIpAddress = async function (timeout) {
     const parseSearchResult = (result) => {
         if (typeof result !== "undefined" && result.length > 0) {
             if (result[0].hasOwnProperty("ipaddress")) {
@@ -46,37 +46,59 @@ exports.discoverHueBridgeIpAddress = function (timeout) {
     );
 };
 
-function getUsernameFromFile() {
-    const filepath = __dirname + "\\.huedata";
+const getUserFromFile = async function () {
+    const filePath = __dirname + "\\.hue.config";
 
     return new Promise((resolve, reject) => {
-        fs.access(filepath, fs.F_OK, (error) => {
+        fs.access(filePath, fs.F_OK, async (error) => {
             if (!error) {
                 const readInterface = readline.createInterface({
-                    input: fs.createReadStream(filepath),
+                    input: fs.createReadStream(filePath),
                     output: process.stdout,
                     terminal: false,
+                    crlfDelay: Infinity,
                 });
 
-                readInterface.on("line", (line) => {
-                    readInterface.close();
-                    readInterface.removeAllListeners();
+                const fileContent = [];
+                for await (const line of readInterface) {
+                    fileContent.push(line);
+                }
 
-                    const parsedLine = line.split(" ");
-                    if (parsedLine.length !== 2) {
-                        reject(Error("File " + filepath + " is corrupted"));
-                    }
-
-                    resolve(parsedLine[1]);
-                });
+                readInterface.close();
+                readInterface.removeAllListeners();
+                try {
+                    const user = parseUserFileContent(filePath, fileContent);
+                    resolve(user);
+                } catch (error) {
+                    reject(error);
+                }
             } else {
-                reject(Error("File " + filepath + " does not exist"));
+                reject(Error("File " + filePath + " does not exist"));
             }
         });
     });
-}
+};
 
-exports.createHueUser = async function (ipAddress, appName, deviceName) {
+const parseUserFileContent = function (filePath, fileContent) {
+    if (fileContent.length == 2) {
+        const usernameParsed = fileContent[0].split(" ");
+        const entertainmentAPIKeyParsed = fileContent[1].split(" ");
+
+        if (
+            usernameParsed.length == 2 &&
+            entertainmentAPIKeyParsed.length == 2
+        ) {
+            return {
+                username: usernameParsed[1],
+                entertainmentAPIKey: entertainmentAPIKeyParsed[1],
+            };
+        }
+    }
+
+    throw Error("File " + filePath + " is invalid");
+};
+
+const createUser = async function (ipAddress, appName, deviceName) {
     const unauthenticatedUser = await hue.api.createLocal(ipAddress).connect();
 
     const timeLimit = 30; // seconds
@@ -138,13 +160,75 @@ exports.createHueUser = async function (ipAddress, appName, deviceName) {
     );
 };
 
-exports.linkWithHueBridge = async function () {
-    //const username = await getUsernameFromFile();
-    const ipAddress = await discoverHueBridgeIpAddress(10000);
-    createHueUser(ipAddress, "HomeControl", "Desktop").then(
-        (user) => console.log(user),
-        (error) => {
-            console.log(error);
-        }
-    );
+const createUserFile = async function (user) {
+    const { username, clientkey } = user;
+
+    const filePath = __dirname + "\\.hue.config";
+    const fileContent =
+        "Username: " + username + "\n" + "EntertainmentAPIKey: " + clientkey;
+
+    return new Promise((resolve, reject) => {
+        fs.writeFile(filePath, fileContent, (error) => {
+            if (error) {
+                reject(error);
+            }
+            resolve();
+        });
+    });
 };
+
+const linkWithHueBridge = async function (appName, deviceName) {
+    let ipAddress;
+    try {
+        ipAddress = await discoverBridgeIpAddress(10000);
+        console.log(
+            ("Found Hue bridge at IP address: " + ipAddress + "\n").green
+        );
+    } catch (error) {
+        throw Error(
+            "Failed to locate Hue bridge IP address by UPnP/N-UPnP search"
+        );
+    }
+
+    let user;
+    try {
+        user = await getUserFromFile();
+        console.log("Hue user data retreived from config file");
+    } catch (error) {
+        console.log("No valid hue.config file found - creating new user");
+        try {
+            user = await createUser(ipAddress, appName, deviceName);
+            try {
+                await createUserFile(user);
+            } catch (error) {
+                throw error;
+            }
+        } catch (error) {
+            throw Error(
+                "Failed to create or locate valid user data - Hue functions will not work"
+            );
+        }
+    }
+
+    try {
+        const authenticatedUser = await hue.api
+            .createLocal(ipAddress)
+            .connect(user.username);
+
+        console.log(await authenticatedUser.configuration.getConfiguration());
+
+        return authenticatedUser;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// Exports
+const HueDiscovery = {
+    linkWithHueBridge: linkWithHueBridge,
+    discoverBridgeIpAddress: discoverBridgeIpAddress,
+    getUserFromFile: getUserFromFile,
+    parseUserFileContent: parseUserFileContent,
+};
+
+export default HueDiscovery;

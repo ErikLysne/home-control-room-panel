@@ -10,6 +10,10 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-node": "0.0.1-security",
         "chalk-animation": "^1.6.0",
         "cli-progress": "^3.8.2",
         "colors": "^1.4.0",
@@ -18,9 +22,6 @@
         "node-hue-api": "^4.0.6"
     },
     "devDependencies": {
-        "@babel/core": "^7.9.6",
-        "@babel/preset-env": "^7.9.6",
-        "babel-core": "^7.0.0-bridge.0",
         "babel-jest": "^25.5.1"
     }
 }

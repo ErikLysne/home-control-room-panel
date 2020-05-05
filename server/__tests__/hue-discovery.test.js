@@ -1,9 +1,10 @@
+jest.mock("node-hue-api");
+jest.mock("fs");
+
 import hueDiscovery from "../src/hue/hue-discovery";
 import hueApi from "node-hue-api";
 
 const hue = hueApi.v3;
-
-jest.mock("node-hue-api");
 
 describe("discoverHueBridgeIpAddress", () => {
     const upnpSearchResultMock = [
@@ -63,7 +64,7 @@ describe("discoverHueBridgeIpAddress", () => {
         hue.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
 
         return expect(
-            hueDiscovery.discoverHueBridgeIpAddress(10000)
+            hueDiscovery.discoverBridgeIpAddress(10000)
         ).resolves.toEqual("192.168.0.20");
     });
 
@@ -72,7 +73,7 @@ describe("discoverHueBridgeIpAddress", () => {
         hue.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
 
         return expect(
-            hueDiscovery.discoverHueBridgeIpAddress(10000)
+            hueDiscovery.discoverBridgeIpAddress(10000)
         ).resolves.toEqual("192.168.0.10");
     });
 
@@ -81,7 +82,7 @@ describe("discoverHueBridgeIpAddress", () => {
         hue.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
 
         return expect(
-            hueDiscovery.discoverHueBridgeIpAddress(1000)
+            hueDiscovery.discoverBridgeIpAddress(1000)
         ).rejects.toThrow();
     });
 
@@ -89,7 +90,7 @@ describe("discoverHueBridgeIpAddress", () => {
         hue.discovery.upnpSearch.mockResolvedValue(upnpSearchResultMock);
         hue.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
 
-        const ipAddress = await hueDiscovery.discoverHueBridgeIpAddress(1000);
+        const ipAddress = await hueDiscovery.discoverBridgeIpAddress(1000);
 
         expect(ipAddress === "192.168.0.10" || ipAddress === "192.168.0.20")
             .toBeTruthy;
@@ -100,7 +101,35 @@ describe("discoverHueBridgeIpAddress", () => {
         hue.discovery.nupnpSearch.mockRejectedValue(upnpSearchErrorMock);
 
         return expect(
-            hueDiscovery.discoverHueBridgeIpAddress(10000)
+            hueDiscovery.discoverBridgeIpAddress(10000)
         ).rejects.toThrow();
+    });
+});
+
+describe("parseUserFileContent", () => {
+    const filePath = "/path/to/userfile";
+    const validUserFileContent = [
+        "username: test-user-name",
+        "entertainmentAPIKey: test-entertainment-api-key",
+    ];
+
+    const invalidUserFileContent = [
+        "username: test-user-name",
+        "entertainmentAPIKey-is-missing",
+    ];
+
+    it("parses username and entertainment API key with valid input", () => {
+        expect(
+            hueDiscovery.parseUserFileContent(filePath, validUserFileContent)
+        ).toEqual({
+            username: "test-user-name",
+            entertainmentAPIKey: "test-entertainment-api-key",
+        });
+    });
+
+    it("throws error if file content is invalid", () => {
+        expect(() =>
+            hueDiscovery.parseUserFileContent(filePath, invalidUserFileContent)
+        ).toThrow();
     });
 });

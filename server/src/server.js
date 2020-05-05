@@ -14,4 +14,4 @@ app.listen(8080);
 
 console.log("Started server on port 8080");
 
-hueDiscovery.linkWithHueBridge();
+hueDiscovery.linkWithHueBridge("HomeControl", "Desktop");
