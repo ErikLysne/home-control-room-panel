@@ -1,0 +1,27 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "start.js",
+    "scripts": {
+        "test": "jest",
+        "start": "node start.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
+        "babel-core": "^7.0.0-bridge.0",
+        "babel-node": "0.0.1-security",
+        "chalk-animation": "^1.6.0",
+        "cli-progress": "^3.8.2",
+        "colors": "^1.4.0",
+        "esm": "^3.2.25",
+        "express": "^4.17.1",
+        "node-hue-api": "^4.0.6"
+    },
+    "devDependencies": {
+        "babel-jest": "^25.5.1"
+    }
+}
