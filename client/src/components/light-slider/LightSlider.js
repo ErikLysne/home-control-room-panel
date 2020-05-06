@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -37,10 +37,8 @@ const StyledSlider = styled.input`
 `;
 
 function LightSlider(props) {
-    const [value, setValue] = useState(50);
-
     const handleValueChange = (event) => {
-        setValue(event.target.value);
+        props.setValue(event.target.value);
     };
 
     return (
@@ -52,7 +50,7 @@ function LightSlider(props) {
                 min="1"
                 max="100"
             />
-            <Label>{value}</Label>
+            <Label>{props.value}</Label>
         </Wrapper>
     );
 }

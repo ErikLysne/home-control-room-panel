@@ -215,7 +215,11 @@ const linkWithHueBridge = async function (appName, deviceName) {
             .createLocal(ipAddress)
             .connect(user.username);
 
-        console.log(await authenticatedUser.configuration.getConfiguration());
+        await authenticatedUser.groups.getAll().then((groups) => {
+            groups.forEach((group) => {
+                console.log(group.name);
+            });
+        });
 
         return authenticatedUser;
     } catch (error) {

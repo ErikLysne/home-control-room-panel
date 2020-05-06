@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LightSlider from "../light-slider/LightSlider";
 
@@ -15,9 +15,11 @@ const Wrapper = styled.div`
 `;
 
 function MainPanel() {
+    const [hue, setHue] = useState(50);
+
     return (
         <Wrapper>
-            <LightSlider />
+            <LightSlider value={hue} setValue={setHue} />
         </Wrapper>
     );
 }
