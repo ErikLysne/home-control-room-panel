@@ -4,6 +4,7 @@ import cliProgress from "cli-progress";
 import chalkAnimation from "chalk-animation";
 import fs from "fs";
 import readline from "readline";
+import GroupState from "node-hue-api/lib/model/lightstate/GroupState";
 
 const hue = hueApi.v3;
 
@@ -56,7 +57,7 @@ const getUserFromFile = async function () {
                     input: fs.createReadStream(filePath),
                     output: process.stdout,
                     terminal: false,
-                    crlfDelay: Infinity,
+                    crlfDelay: Infinity
                 });
 
                 const fileContent = [];
@@ -90,7 +91,7 @@ const parseUserFileContent = function (filePath, fileContent) {
         ) {
             return {
                 username: usernameParsed[1],
-                entertainmentAPIKey: entertainmentAPIKeyParsed[1],
+                entertainmentAPIKey: entertainmentAPIKeyParsed[1]
             };
         }
     }
@@ -110,7 +111,7 @@ const createUser = async function (ipAddress, appName, deviceName) {
         {
             format: "[{bar}] Time left: {eta}s",
             clearOnComplete: true,
-            hideCursor: true,
+            hideCursor: true
         },
         cliProgress.Presets.shades_classic
     );
@@ -210,29 +211,23 @@ const linkWithHueBridge = async function (appName, deviceName) {
         }
     }
 
-    try {
-        const authenticatedUser = await hue.api
-            .createLocal(ipAddress)
-            .connect(user.username);
-
-        await authenticatedUser.groups.getAll().then((groups) => {
-            groups.forEach((group) => {
-                console.log(group.name);
-            });
-        });
-
-        return authenticatedUser;
-    } catch (error) {
-        throw error;
-    }
+    return new Promise(async (resolve, reject) => {
+        try {
+            resolve(
+                await hue.api.createLocal(ipAddress).connect(user.username)
+            );
+        } catch (error) {
+            reject(error);
+        }
+    });
 };
 
 // Exports
 const HueDiscovery = {
-    linkWithHueBridge: linkWithHueBridge,
-    discoverBridgeIpAddress: discoverBridgeIpAddress,
-    getUserFromFile: getUserFromFile,
-    parseUserFileContent: parseUserFileContent,
+    linkWithHueBridge,
+    discoverBridgeIpAddress,
+    getUserFromFile,
+    parseUserFileContent
 };
 
 export default HueDiscovery;

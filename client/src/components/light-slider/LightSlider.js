@@ -25,7 +25,7 @@ const StyledSlider = styled.input`
     margin: 2px;
     -webkit-appearance: none;
     appearence: none;
-    background: url("/images/HueSlider.png");
+    background: url("${(props) => props.backgroundImage}");
 
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
@@ -37,18 +37,20 @@ const StyledSlider = styled.input`
 `;
 
 function LightSlider(props) {
-    const handleValueChange = (event) => {
-        props.setValue(event.target.value);
+    const handleValueChangeEvent = (event) => {
+        props.onChange(parseInt(event.target.value));
     };
 
     return (
         <Wrapper>
-            <Label>Hue</Label>
+            <Label>{props.property}</Label>
             <StyledSlider
-                onChange={handleValueChange}
+                onChange={handleValueChangeEvent}
                 type="range"
                 min="1"
                 max="100"
+                value={props.value}
+                backgroundImage={props.backgroundImage}
             />
             <Label>{props.value}</Label>
         </Wrapper>
