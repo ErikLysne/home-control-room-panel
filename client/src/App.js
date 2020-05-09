@@ -1,25 +1,32 @@
 import React from "react";
-import styled from "styled-components";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import logger from "redux-logger";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducer from "./reducers";
+
+// Components
 import Background from "./components/background/Background";
 import InfoBar from "./components/info-bar/InfoBar";
 import LogoBar from "./components/logo-bar/LogoBar";
 import MainMenu from "./components/main-menu/MainMenu";
 import MainPanel from "./components/main-panel/MainPanel";
 
-const Wrapper = styled.div`
-    width: 100vw;
-    height: 100vh;
-`;
+const store = createStore(
+    rootReducer,
+    composeWithDevTools(applyMiddleware(logger, thunk))
+);
 
 function App() {
     return (
-        <Wrapper>
+        <Provider store={store}>
             <Background />
             <InfoBar />
             <LogoBar />
             <MainMenu />
             <MainPanel />
-        </Wrapper>
+        </Provider>
     );
 }
 

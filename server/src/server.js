@@ -1,17 +1,60 @@
 import express from "express";
+import http from "http";
+import socket from "socket.io";
 import path from "path";
-import hueDiscovery from "./hue/hue-discovery";
+import HueDiscovery from "./hue/hue-discovery";
+import GroupState from "node-hue-api/lib/model/lightstate/GroupState";
 
 const app = express();
+const server = http.createServer(app);
+const io = socket(server);
 
-app.use(express.static(path.join(__dirname, "../build")));
+app.use(express.static(path.join(__dirname, "../../client/build")));
 
+/*
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "../build", "index.html"));
+    res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
 });
+*/
 
-app.listen(8080);
+server.listen(8080);
 
 console.log("Started server on port 8080");
 
-hueDiscovery.linkWithHueBridge("HomeControl", "Desktop");
+HueDiscovery.linkWithHueBridge("HomeControl", "Desktop")
+    .then((hueUser) => {
+        io.on("connection", (socket) => {
+            socket.on("request-network-info", () => {
+                socket.emit("request-network-info-success");
+            });
+            socket.on("request-light-change", (light) => {
+                const stateConvert = light.state;
+                const hueConvert = (65535 * light.hue) / 100;
+                const brightnessConvert = light.brightness;
+                const saturationConvert = light.saturation;
+
+                const groupState = new GroupState()
+                    .on(stateConvert)
+                    .hue(hueConvert)
+                    .saturation(saturationConvert)
+                    .brightness(brightnessConvert);
+
+                console.log(groupState.state);
+                hueUser.groups
+                    .setGroupState(1, groupState)
+                    .then((result) => {
+                        if (result) {
+                            socket.emit("request-light-change-success", result);
+                        } else {
+                            socket.emit("request-light-change-failure", result);
+                        }
+                    })
+                    .catch((error) =>
+                        socket.emit("request-light-change-failure", error)
+                    );
+            });
+        });
+    })
+    .catch((error) => {
+        throw error;
+    });

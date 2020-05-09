@@ -19,7 +19,8 @@
         "colors": "^1.4.0",
         "esm": "^3.2.25",
         "express": "^4.17.1",
-        "node-hue-api": "^4.0.6"
+        "node-hue-api": "^4.0.6",
+        "socket.io": "^2.3.0"
     },
     "devDependencies": {
         "babel-jest": "^25.5.1"

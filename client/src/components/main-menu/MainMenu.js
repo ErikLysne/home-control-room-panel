@@ -1,6 +1,13 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import Button from "../button/Button";
+import ToggleButton from "../toggle-button/ToggleButton";
+import {
+    mainMenuLightsPanelActivated,
+    mainMenuNetworkPanelActivated,
+    mainMenuSensorsPanelActivated,
+    mainMenuSettingsPanelActivated
+} from "../../actions";
 
 const Wrapper = styled.div`
     width: 96%;
@@ -18,12 +25,47 @@ const Wrapper = styled.div`
 `;
 
 function MainMenu() {
+    const mainMenu = useSelector((state) => state.mainMenu);
+    const dispatch = useDispatch();
+
     return (
         <Wrapper>
-            <Button label="Lights" icon="/images/icons/Lights.png" />
-            <Button label="Sensors" icon="/images/icons/Sensors.png" />
-            <Button label="Network" icon="/images/icons/Network.png" />
-            <Button label="Settings" icon="/images/icons/Settings.png" />
+            <ToggleButton
+                onClick={() => dispatch(mainMenuLightsPanelActivated())}
+                state={mainMenu.lightsPanelActive}
+                labelOn="Light"
+                labelOff="Light"
+                iconOn="/images/icons/Lights.png"
+                iconOff="/images/icons/Lights.png"
+                size="medium"
+            />
+            <ToggleButton
+                onClick={() => dispatch(mainMenuNetworkPanelActivated())}
+                state={mainMenu.networkPanelActive}
+                labelOn="Network"
+                labelOff="Network"
+                iconOn="/images/icons/Network.png"
+                iconOff="/images/icons/Network.png"
+                size="medium"
+            />
+            <ToggleButton
+                onClick={() => dispatch(mainMenuSensorsPanelActivated())}
+                state={mainMenu.sensorsPanelActive}
+                labelOn="Sensors"
+                labelOff="Sensors"
+                iconOn="/images/icons/Sensors.png"
+                iconOff="/images/icons/Sensors.png"
+                size="medium"
+            />
+            <ToggleButton
+                onClick={() => dispatch(mainMenuSettingsPanelActivated())}
+                state={mainMenu.settingsPanelActive}
+                labelOn="Settings"
+                labelOff="Settings"
+                iconOn="/images/icons/Settings.png"
+                iconOff="/images/icons/Settings.png"
+                size="medium"
+            />
         </Wrapper>
     );
 }
