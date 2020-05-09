@@ -2,12 +2,12 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const Button = styled.button`
-    width: ${(props) => (props.size === "large" ? "192px" : "101px")};
+    width: ${(props) => (props.size === "large" ? 192 : 101)}px;
     height: 101px;
     margin: auto 5px;
     ${(props) =>
         props.size === "large"
-            ? "display: flex; justify-content: center: align-items: center;"
+            ? "display: flex; justify-content: center; align-items: center;"
             : ""}
     border-style: none;
     background: url("${(props) =>
@@ -34,7 +34,7 @@ const buttonToggledKeyframes = keyframes`
     }
 `;
 
-const Label = styled.div`
+const LargeLabel = styled.div`
     width: 50%;
     height: 100%;
     float: left;
@@ -42,10 +42,15 @@ const Label = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
+    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
+`;
+
+const MediumLabel = styled.div`
+    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
 `;
 
 const Logo = styled.div`
-    width: 50%;
+    width: 50px;
     height: 50px;
     padding: 20px 0 5px;
     ${(props) => (props.size === "large" ? "float: right;" : "")};
@@ -54,6 +59,7 @@ const Logo = styled.div`
         props.toggled ? props.iconOn : props.iconOff});
     background-repeat: no-repeat;
     background-position: center;
+    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
 `;
 
 function ToggleButton(props) {
@@ -68,15 +74,20 @@ function ToggleButton(props) {
             onClick={handleClickEvent}
         >
             {props.size === "large" && (
-                <Label>{props.state ? props.labelOn : props.labelOff}</Label>
+                <LargeLabel toggled={props.state}>
+                    {props.state ? props.labelOn : props.labelOff}
+                </LargeLabel>
             )}
             <Logo
                 toggled={props.state}
                 iconOn={props.iconOn}
                 iconOff={props.iconOff}
             />
-            {props.size !== "large" &&
-                (props.state ? props.labelOn : props.labelOff)}
+            {props.size !== "large" && (
+                <MediumLabel toggled={props.state}>
+                    {props.state ? props.labelOn : props.labelOff}
+                </MediumLabel>
+            )}
         </Button>
     );
 }

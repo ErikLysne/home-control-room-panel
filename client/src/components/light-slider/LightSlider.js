@@ -5,16 +5,19 @@ const Wrapper = styled.div`
     width: 100%;
     height: 30px;
     padding-top: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+`;
+
+const LabelWrapper = styled.div`
+    width: 100%;
+    height: 100%;
 `;
 
 const Label = styled.div`
-    width: 50px;
+    width: 45%;
     height: 100%;
     margin-left: 10px;
     margin-right: auto;
+    display: inline;
     text-align: left;
     color: rgb(255, 255, 255);
 `;
@@ -43,7 +46,10 @@ function LightSlider(props) {
 
     return (
         <Wrapper>
-            <Label>{props.property}</Label>
+            <LabelWrapper>
+                <Label>{props.property}</Label>
+                <Label>{props.value}</Label>
+            </LabelWrapper>
             <StyledSlider
                 onChange={handleValueChangeEvent}
                 type="range"
@@ -52,7 +58,6 @@ function LightSlider(props) {
                 value={props.value}
                 backgroundImage={props.backgroundImage}
             />
-            <Label>{props.value}</Label>
         </Wrapper>
     );
 }

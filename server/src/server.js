@@ -24,18 +24,22 @@ console.log("Started server on port 8080");
 HueDiscovery.linkWithHueBridge("HomeControl", "Desktop")
     .then((hueUser) => {
         io.on("connection", (socket) => {
-            console.log("Hello from client!");
+            socket.on("request-network-info", () => {
+                socket.emit("request-network-info-success");
+            });
             socket.on("request-light-change", (light) => {
+                const stateConvert = light.state;
                 const hueConvert = (65535 * light.hue) / 100;
                 const brightnessConvert = light.brightness;
                 const saturationConvert = light.saturation;
 
                 const groupState = new GroupState()
-                    .on(true)
+                    .on(stateConvert)
                     .hue(hueConvert)
                     .saturation(saturationConvert)
                     .brightness(brightnessConvert);
 
+                console.log(groupState.state);
                 hueUser.groups
                     .setGroupState(1, groupState)
                     .then((result) => {

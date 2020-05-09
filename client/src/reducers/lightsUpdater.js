@@ -19,14 +19,14 @@ const lightsUpdater = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 result: "",
-                error: action.payload
+                error: action.error
             };
 
         case "lightsUpdater/requestFailed":
             return {
                 ...state,
                 loading: false,
-                result: action.payload,
+                result: action.result,
                 error: ""
             };
         case "lightsUpdater/requestTimedOut":
