@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import LightsPanel from "../lights-panel/LightsPanel";
 import NetworkPanel from "../network-panel/NetworkPanel";
@@ -23,7 +23,6 @@ const Margin = styled.div`
 
 function MainPanel(props) {
     const mainMenu = useSelector((state) => state.mainMenu);
-    const dispatch = useDispatch();
 
     return (
         <Panel>

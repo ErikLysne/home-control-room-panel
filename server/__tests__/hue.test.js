@@ -1,10 +1,11 @@
 jest.mock("node-hue-api");
 jest.mock("fs");
 
-import hueDiscovery from "../src/hue/hue-discovery";
+import Hue from "../src/hue";
 import hueApi from "node-hue-api";
 
-const hue = hueApi.v3;
+const hueApiv3 = hueApi.v3;
+const hue = new Hue();
 
 describe("discoverHueBridgeIpAddress", () => {
     const upnpSearchResultMock = [
@@ -16,11 +17,11 @@ describe("discoverHueBridgeIpAddress", () => {
                 number: "BSB002",
                 description: "Philips hue Personal Wireless Lighting",
                 name: "Philips hue bridge 2015",
-                serial: "0017xxxxxxxx",
+                serial: "0017xxxxxxxx"
             },
             version: {
                 major: "1",
-                minor: "0",
+                minor: "0"
             },
             icons: [
                 {
@@ -28,10 +29,10 @@ describe("discoverHueBridgeIpAddress", () => {
                     height: "48",
                     width: "48",
                     depth: "24",
-                    url: "hue_logo_0.png",
-                },
-            ],
-        },
+                    url: "hue_logo_0.png"
+                }
+            ]
+        }
     ];
 
     const upnpSearchResultEmptyMock = [];
@@ -43,8 +44,8 @@ describe("discoverHueBridgeIpAddress", () => {
             name: "Philips hue",
             ipaddress: "192.168.0.10",
             modelid: "BSB002",
-            swversion: "1935074050",
-        },
+            swversion: "1935074050"
+        }
     ];
 
     const nupnpSearchResultErrorMock = {
@@ -53,56 +54,54 @@ describe("discoverHueBridgeIpAddress", () => {
             description:
                 "Failed to connect and load configuration from the bridge at ip address xxx.xxx.xxx.xxx",
             ipaddress: "xxx.xxx.xxx.xxx",
-            id: "xxxxxxxxxxxxxxxx",
-        },
+            id: "xxxxxxxxxxxxxxxx"
+        }
     };
 
     const nupnpSearchErrorMock = Error("N-UPnP search failed");
 
     it("returns ip address when UPnP search succeeds and N-UPnP search fails", async () => {
-        hue.discovery.upnpSearch.mockResolvedValue(upnpSearchResultMock);
-        hue.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
+        hueApiv3.discovery.upnpSearch.mockResolvedValue(upnpSearchResultMock);
+        hueApiv3.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
 
-        return expect(
-            hueDiscovery.discoverBridgeIpAddress(10000)
-        ).resolves.toEqual("192.168.0.20");
+        return expect(hue.discoverBridgeIpAddress(10000)).resolves.toEqual(
+            "192.168.0.20"
+        );
     });
 
     it("returns ip address when UPnP search fails and N-UPnP search succeeds", async () => {
-        hue.discovery.upnpSearch.mockRejectedValue(upnpSearchErrorMock);
-        hue.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
+        hueApiv3.discovery.upnpSearch.mockRejectedValue(upnpSearchErrorMock);
+        hueApiv3.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
 
-        return expect(
-            hueDiscovery.discoverBridgeIpAddress(10000)
-        ).resolves.toEqual("192.168.0.10");
+        return expect(hue.discoverBridgeIpAddress(10000)).resolves.toEqual(
+            "192.168.0.10"
+        );
     });
 
     it("throws error when UPnP search fails and N-UPnP search fails", async () => {
-        hue.discovery.upnpSearch.mockRejectedValue(upnpSearchErrorMock);
-        hue.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
+        hueApiv3.discovery.upnpSearch.mockRejectedValue(upnpSearchErrorMock);
+        hueApiv3.discovery.nupnpSearch.mockRejectedValue(nupnpSearchErrorMock);
 
-        return expect(
-            hueDiscovery.discoverBridgeIpAddress(1000)
-        ).rejects.toThrow();
+        return expect(hue.discoverBridgeIpAddress(1000)).rejects.toThrow();
     });
 
     it("returns ip address when UPnP search and N-UPnP search succeeds", async () => {
-        hue.discovery.upnpSearch.mockResolvedValue(upnpSearchResultMock);
-        hue.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
+        hueApiv3.discovery.upnpSearch.mockResolvedValue(upnpSearchResultMock);
+        hueApiv3.discovery.nupnpSearch.mockResolvedValue(nupnpSearchResultMock);
 
-        const ipAddress = await hueDiscovery.discoverBridgeIpAddress(1000);
+        const ipAddress = await hue.discoverBridgeIpAddress(1000);
 
         expect(ipAddress === "192.168.0.10" || ipAddress === "192.168.0.20")
             .toBeTruthy;
     });
 
     it("throws error if UPnP search times out", async () => {
-        hue.discovery.upnpSearch.mockResolvedValue(upnpSearchResultEmptyMock);
-        hue.discovery.nupnpSearch.mockRejectedValue(upnpSearchErrorMock);
+        hueApiv3.discovery.upnpSearch.mockResolvedValue(
+            upnpSearchResultEmptyMock
+        );
+        hueApiv3.discovery.nupnpSearch.mockRejectedValue(upnpSearchErrorMock);
 
-        return expect(
-            hueDiscovery.discoverBridgeIpAddress(10000)
-        ).rejects.toThrow();
+        return expect(hue.discoverBridgeIpAddress(10000)).rejects.toThrow();
     });
 });
 
@@ -110,26 +109,26 @@ describe("parseUserFileContent", () => {
     const filePath = "/path/to/userfile";
     const validUserFileContent = [
         "username: test-user-name",
-        "entertainmentAPIKey: test-entertainment-api-key",
+        "entertainmentAPIKey: test-entertainment-api-key"
     ];
 
     const invalidUserFileContent = [
         "username: test-user-name",
-        "entertainmentAPIKey-is-missing",
+        "entertainmentAPIKey-is-missing"
     ];
 
     it("parses username and entertainment API key with valid input", () => {
         expect(
-            hueDiscovery.parseUserFileContent(filePath, validUserFileContent)
+            Hue.parseUserFileContent(filePath, validUserFileContent)
         ).toEqual({
             username: "test-user-name",
-            entertainmentAPIKey: "test-entertainment-api-key",
+            entertainmentAPIKey: "test-entertainment-api-key"
         });
     });
 
     it("throws error if file content is invalid", () => {
         expect(() =>
-            hueDiscovery.parseUserFileContent(filePath, invalidUserFileContent)
+            Hue.parseUserFileContent(filePath, invalidUserFileContent)
         ).toThrow();
     });
 });
