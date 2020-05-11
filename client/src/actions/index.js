@@ -1,10 +1,3 @@
-//import io from "socket.io-client";
-const ENDPOINT = "http://10.0.0.10:8080";
-
-//const socket = io.connect(ENDPOINT);
-
-// Lights updater
-
 // Network info
 export const networkInfoRequestSent = (socket) => ({
     type: "networkInfo/requestSent",
@@ -26,9 +19,6 @@ export const networkInfoTimedOut = (result) => ({
 });
 
 export const networkInfoRequested = () => {
-    const REQUEST_TIMEOUT = 1000;
-    const startTime = new Date();
-
     return (dispatch) => {
         /*
         dispatch(networkInfoRequestSent(socket.io.opts));

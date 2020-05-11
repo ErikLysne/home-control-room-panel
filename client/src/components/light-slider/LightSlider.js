@@ -5,6 +5,7 @@ const Wrapper = styled.div`
     width: 100%;
     height: 30px;
     padding-top: 30px;
+    opacity: ${(props) => (props.active ? 100 : 50)}%;
 `;
 
 const LabelWrapper = styled.div`
@@ -45,7 +46,7 @@ function LightSlider(props) {
     };
 
     return (
-        <Wrapper>
+        <Wrapper active={props.active}>
             <LabelWrapper>
                 <Label>{props.property}</Label>
                 <Label>{props.value}</Label>
@@ -55,6 +56,7 @@ function LightSlider(props) {
                 type="range"
                 min="1"
                 max="100"
+                disabled={!props.active}
                 value={props.value}
                 backgroundImage={props.backgroundImage}
             />

@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 const Table = styled.table`
@@ -8,27 +7,27 @@ const Table = styled.table`
     color: rgb(255, 255, 255);
 `;
 
-function LightsInfo() {
-    const lightsInfo = useSelector((state) => state.lightsInfo);
+function LightsInfo(props) {
+    const { info } = props;
 
     return (
         <Table>
             <tbody>
                 <tr>
                     <td>Room:</td>
-                    <td>{lightsInfo.room}</td>
+                    <td>{info.name}</td>
                 </tr>
                 <tr>
                     <td>Mode:</td>
-                    <td>{lightsInfo.mode}</td>
+                    <td>{info.mode}</td>
+                </tr>
+                <tr>
+                    <td>Lights:</td>
+                    <td>{info.lights.length}</td>
                 </tr>
                 <tr>
                     <td>All on:</td>
-                    <td>{lightsInfo.allOn ? "True" : "False"}</td>
-                </tr>
-                <tr>
-                    <td>Any on:</td>
-                    <td>{lightsInfo.anyOn ? "True" : "False"}</td>
+                    <td>{info.allOn ? "Yes" : "No"}</td>
                 </tr>
             </tbody>
         </Table>

@@ -4,7 +4,7 @@ import Hue from "../../hue";
 const router = express.Router();
 
 const hue = new Hue();
-const hueGroups = [];
+let hueGroups = [];
 hue.linkWithHueBridge("HomeControl", "Desktop")
     .then(() => {
         console.log("Successfully linked with Hue bridge".green);
@@ -92,20 +92,13 @@ router
             const group = getGroup(groupName);
 
             hue.setGroupState(group.id, newState)
-                .then((result) => {
-                    result.on !== undefined && (group.action.on = result.on);
-                    result.bri !== undefined && (group.action.bri = result.bri);
-                    result.hue !== undefined && (group.action.hue = result.hue);
-                    result.sat !== undefined && (group.action.sat = result.sat);
-                    result.effect !== undefined &&
-                        (group.action.effect = result.effect);
-                    result.ct !== undefined && (group.action.sat = result.sat);
-                    result.alert !== undefined &&
-                        (group.action.alert = result.alert);
-
-                    const index = hueGroups.indexOf(group);
-                    hueGroups[index] = group;
-                    res.send(group);
+                .then(() => {
+                    hue.getGroupState(groupName).then((groupState) => {
+                        hueGroups[
+                            hueGroups.indexOf(getGroup(groupName))
+                        ] = groupState;
+                        res.send(groupState);
+                    });
                 })
                 .catch(() => {
                     sendHueBridgeErrorResponse(res);

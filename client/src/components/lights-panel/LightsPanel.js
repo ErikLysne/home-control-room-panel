@@ -18,17 +18,22 @@ const Wrapper = styled.div`
     height: 100%;
 `;
 
-const LightsInfoWrapper = styled.div`
-    width: 45%;
+const InfoWrapper = styled.div`
+    width: 50%;
     height: 120px;
-    float: left;
+    float: right;
 `;
-const LightsStateButtonWrapper = styled.div`
+const StateButtonWrapper = styled.div`
     width: 45%;
     height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+const SliderWrapper = styled.div`
+    width: 300px;
+    margin: 0 auto;
 `;
 
 function LightsPanel() {
@@ -37,7 +42,7 @@ function LightsPanel() {
 
     useEffect(() => {
         dispatch(remoteGetLightsRequest());
-    }, []);
+    }, [dispatch]);
 
     const convertToRawFromHue = (hue) => Math.round((hue * 65535.0) / 100.0);
     const convertToRawFromBrightness = (brightness) =>
@@ -53,10 +58,10 @@ function LightsPanel() {
 
     return (
         <Wrapper>
-            <LightsInfoWrapper>
-                <LightsInfo />
-            </LightsInfoWrapper>
-            <LightsStateButtonWrapper>
+            <InfoWrapper>
+                <LightsInfo info={lights.local.info} />
+            </InfoWrapper>
+            <StateButtonWrapper>
                 <ToggleButton
                     state={lights.local.on}
                     onClick={(state) => {
@@ -74,49 +79,57 @@ function LightsPanel() {
                     iconOff="/images/icons/Off.png"
                     size="large"
                 />
-            </LightsStateButtonWrapper>
-            <LightSlider
-                property={"Hue"}
-                backgroundImage={"/images/HueSlider.png"}
-                value={convertToHueFromRaw(lights.local.hue)}
-                onChange={(value) => {
-                    const raw = convertToRawFromHue(value);
-                    dispatch(localHueChanged(raw));
-                    dispatch(
-                        remoteSetLightsRequest({ ...lights.local, hue: raw })
-                    );
-                }}
-            />
-            <LightSlider
-                property={"Saturation"}
-                backgroundImage={"/images/SaturationSlider.png"}
-                value={convertToSaturationFromRaw(lights.local.saturation)}
-                onChange={(value) => {
-                    const raw = convertToRawFromSaturation(value);
-                    dispatch(localSaturationChanged(raw));
-                    dispatch(
-                        remoteSetLightsRequest({
-                            ...lights.local,
-                            saturation: raw
-                        })
-                    );
-                }}
-            />
-            <LightSlider
-                property={"Brightness"}
-                backgroundImage={"/images/BrightnessSlider.png"}
-                value={convertToBrightnessFromRaw(lights.local.brightness)}
-                onChange={(value) => {
-                    const raw = convertToRawFromBrightness(value);
-                    dispatch(localBrightnessChanged(raw));
-                    dispatch(
-                        remoteSetLightsRequest({
-                            ...lights.local,
-                            brightness: raw
-                        })
-                    );
-                }}
-            />
+            </StateButtonWrapper>
+            <SliderWrapper>
+                <LightSlider
+                    property={"Hue"}
+                    backgroundImage={"/images/HueSlider.png"}
+                    value={convertToHueFromRaw(lights.local.hue)}
+                    onChange={(value) => {
+                        const raw = convertToRawFromHue(value);
+                        dispatch(localHueChanged(raw));
+                        dispatch(
+                            remoteSetLightsRequest({
+                                ...lights.local,
+                                hue: raw
+                            })
+                        );
+                    }}
+                    active={lights.local.on}
+                />
+                <LightSlider
+                    property={"Saturation"}
+                    backgroundImage={"/images/SaturationSlider.png"}
+                    value={convertToSaturationFromRaw(lights.local.saturation)}
+                    onChange={(value) => {
+                        const raw = convertToRawFromSaturation(value);
+                        dispatch(localSaturationChanged(raw));
+                        dispatch(
+                            remoteSetLightsRequest({
+                                ...lights.local,
+                                saturation: raw
+                            })
+                        );
+                    }}
+                    active={lights.local.on}
+                />
+                <LightSlider
+                    property={"Brightness"}
+                    backgroundImage={"/images/BrightnessSlider.png"}
+                    value={convertToBrightnessFromRaw(lights.local.brightness)}
+                    onChange={(value) => {
+                        const raw = convertToRawFromBrightness(value);
+                        dispatch(localBrightnessChanged(raw));
+                        dispatch(
+                            remoteSetLightsRequest({
+                                ...lights.local,
+                                brightness: raw
+                            })
+                        );
+                    }}
+                    active={lights.local.on}
+                />
+            </SliderWrapper>
         </Wrapper>
     );
 }

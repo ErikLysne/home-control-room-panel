@@ -1,6 +1,4 @@
 import axios from "axios";
-const ENDPOINT = "http://10.0.0.10:8080";
-const ACTIVE_ROOM = "Living Room";
 
 // Local actions
 export const localOnChanged = (value) => ({
@@ -31,12 +29,21 @@ export const localUpdatedFromRemote = (state) => ({
     brightness: state.brightness
 });
 
+export const localInfoUpdatedFromRemote = (state) => ({
+    type: "lights/local/info/updatedFromRemote",
+    id: state.id,
+    name: state.name,
+    lights: state.lights,
+    allOn: state.allOn,
+    anyOn: state.anyOn
+});
+
 // Remote actions
 export const remoteRequestSent = () => ({
     type: "lights/remote/requestSent"
 });
 
-export const remoteRequestSucceeded = (result) => ({
+export const remoteRequestSucceeded = () => ({
     type: "lights/remote/requestSucceeded"
 });
 
@@ -45,66 +52,90 @@ export const remoteRequestFailed = (error) => ({
     error: error
 });
 
-export const remoteRequestTimedOut = () => ({
-    type: "lights/remote/requestTimedOut"
-});
+const dispatchSuccessfulResult = (dispatch, result) => {
+    const { on, hue, bri, sat } = result.data.action;
+    const { all_on, any_on } = result.data.state;
+    const { id, name, lights } = result.data;
+
+    dispatch(remoteRequestSucceeded());
+    dispatch(
+        localUpdatedFromRemote({
+            on: on,
+            hue: hue,
+            saturation: sat,
+            brightness: bri
+        })
+    );
+    dispatch(
+        localInfoUpdatedFromRemote({
+            id: id,
+            name: name,
+            lights: lights,
+            allOn: all_on,
+            anyOn: any_on
+        })
+    );
+};
 
 export const remoteSetLightsRequest = (lightsLocal) => {
-    const REQUEST_TIMEOUT = 1000;
+    return (dispatch, getState) => {
+        const state = getState();
+        const {
+            serverIpAddress,
+            serverPort,
+            targetRoom
+        } = state.settings.local;
 
-    return (dispatch) => {
         dispatch(remoteRequestSent());
 
-        const timer = setTimeout(() => {
-            dispatch(remoteRequestTimedOut());
-        }, REQUEST_TIMEOUT);
-
         axios
-            .put(ENDPOINT + "/lights/groups/" + ACTIVE_ROOM, {
-                on: lightsLocal.on,
-                hue: lightsLocal.hue,
-                sat: lightsLocal.saturation,
-                bri: lightsLocal.brightness
-            })
-            .then(() => {
-                clearTimeout(timer);
-                dispatch(remoteRequestSucceeded());
-                dispatch(localUpdatedFromRemote(lightsLocal));
+            .put(
+                "http://" +
+                    serverIpAddress +
+                    ":" +
+                    serverPort +
+                    "/lights/groups/" +
+                    targetRoom,
+                {
+                    on: lightsLocal.on,
+                    hue: lightsLocal.hue,
+                    sat: lightsLocal.saturation,
+                    bri: lightsLocal.brightness
+                }
+            )
+            .then((result) => {
+                dispatchSuccessfulResult(dispatch, result);
             })
             .catch((error) => {
-                clearTimeout(timer);
                 dispatch(remoteRequestFailed(error.message));
             });
     };
 };
 
 export const remoteGetLightsRequest = () => {
-    const REQUEST_TIMEOUT = 1000;
+    return (dispatch, getState) => {
+        const state = getState();
+        const {
+            serverIpAddress,
+            serverPort,
+            targetRoom
+        } = state.settings.local;
 
-    return (dispatch) => {
         dispatch(remoteRequestSent());
 
-        const timer = setTimeout(() => {
-            dispatch(remoteRequestTimedOut());
-        }, REQUEST_TIMEOUT);
-
         axios
-            .get(ENDPOINT + "/lights/groups/" + ACTIVE_ROOM)
+            .get(
+                "http://" +
+                    serverIpAddress +
+                    ":" +
+                    serverPort +
+                    "/lights/groups/" +
+                    targetRoom
+            )
             .then((result) => {
-                clearTimeout(timer);
-                const { on, hue, bri, sat } = result.data.action;
-                dispatch(remoteRequestSucceeded());
-                dispatch(
-                    localUpdatedFromRemote({
-                        on: on,
-                        hue: hue,
-                        saturation: sat,
-                        brightness: bri
-                    })
-                );
+                dispatchSuccessfulResult(dispatch, result);
             })
             .catch((error) => {
-                clearTimeout(timer);
                 dispatch(remoteRequestFailed(error.message));
             });
     };
