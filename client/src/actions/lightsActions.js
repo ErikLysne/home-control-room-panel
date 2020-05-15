@@ -77,7 +77,7 @@ const dispatchSuccessfulResult = (dispatch, result) => {
     );
 };
 
-export const remoteSetLightsRequest = (lightsLocal) => {
+export const remoteSetLightsRequested = (lightsLocal) => {
     return (dispatch, getState) => {
         const state = getState();
         const {
@@ -112,7 +112,7 @@ export const remoteSetLightsRequest = (lightsLocal) => {
     };
 };
 
-export const remoteGetLightsRequest = () => {
+export const remoteGetLightsRequested = () => {
     return (dispatch, getState) => {
         const state = getState();
         const {

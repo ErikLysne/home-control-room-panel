@@ -1,6 +1,6 @@
 const initialState = {
     local: {
-        targetRoom: "Living Room",
+        targetRoom: "",
         availableRooms: [],
         serverIpAddress: "10.0.0.10",
         serverPort: "8080"
@@ -30,6 +30,9 @@ const settings = (state = initialState, action) => {
                         id: group.id
                     });
                 });
+                if (local.targetRoom === "") {
+                    local.targetRoom = local.availableRooms[0].name;
+                }
                 break;
             case "targetRoomChanged":
                 local.targetRoom = action.targetRoom;

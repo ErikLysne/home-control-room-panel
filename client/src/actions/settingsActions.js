@@ -24,7 +24,7 @@ export const remoteRequestFailed = () => ({
     type: "settings/remote/requestFailed"
 });
 
-export const remoteGetGroupsRequest = () => {
+export const remoteGetGroupsRequested = () => {
     return (dispatch, getState) => {
         const state = getState();
         const { serverIpAddress, serverPort } = state.settings.local;

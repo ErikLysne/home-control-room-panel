@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import LightsPanel from "../lights-panel/LightsPanel";
 import NetworkPanel from "../network-panel/NetworkPanel";

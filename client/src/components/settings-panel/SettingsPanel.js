@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
+import RoomSelector from "../room-selector/RoomSelector";
 import {
     localTargetRoomChanged,
-    remoteGetGroupsRequest
+    remoteGetGroupsRequested
 } from "../../actions/settingsActions";
-import RoomSelector from "../room-selector/RoomSelector";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -17,17 +17,18 @@ const Wrapper = styled.div`
 
 function SettingsPanel() {
     const settings = useSelector((state) => state.settings);
+    const { availableRooms, targetRoom } = settings.local;
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(remoteGetGroupsRequest());
+        dispatch(remoteGetGroupsRequested());
     }, [dispatch]);
 
     return (
         <Wrapper>
             <RoomSelector
-                rooms={settings.local.availableRooms}
-                target={settings.local.targetRoom}
+                rooms={availableRooms}
+                target={targetRoom}
                 onChange={(room) => dispatch(localTargetRoomChanged(room))}
             />
         </Wrapper>

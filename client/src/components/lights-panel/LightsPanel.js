@@ -9,9 +9,10 @@ import {
     localHueChanged,
     localSaturationChanged,
     localBrightnessChanged,
-    remoteGetLightsRequest,
-    remoteSetLightsRequest
+    remoteGetLightsRequested,
+    remoteSetLightsRequested
 } from "../../actions/lightsActions";
+import { remoteGetGroupsRequested } from "../../actions/settingsActions";
 
 const Wrapper = styled.div`
     width: 100%;
@@ -38,11 +39,18 @@ const SliderWrapper = styled.div`
 
 function LightsPanel() {
     const lights = useSelector((state) => state.lights);
+    const settings = useSelector((state) => state.settings);
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(remoteGetLightsRequest());
+        dispatch(remoteGetGroupsRequested());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (settings.local.targetRoom !== "") {
+            dispatch(remoteGetLightsRequested());
+        }
+    }, [settings.local.targetRoom]);
 
     const convertToRawFromHue = (hue) => Math.round((hue * 65535.0) / 100.0);
     const convertToRawFromBrightness = (brightness) =>
@@ -67,7 +75,7 @@ function LightsPanel() {
                     onClick={(state) => {
                         dispatch(localOnChanged(state));
                         dispatch(
-                            remoteSetLightsRequest({
+                            remoteSetLightsRequested({
                                 ...lights.local,
                                 on: state
                             })
@@ -89,7 +97,7 @@ function LightsPanel() {
                         const raw = convertToRawFromHue(value);
                         dispatch(localHueChanged(raw));
                         dispatch(
-                            remoteSetLightsRequest({
+                            remoteSetLightsRequested({
                                 ...lights.local,
                                 hue: raw
                             })
@@ -105,7 +113,7 @@ function LightsPanel() {
                         const raw = convertToRawFromSaturation(value);
                         dispatch(localSaturationChanged(raw));
                         dispatch(
-                            remoteSetLightsRequest({
+                            remoteSetLightsRequested({
                                 ...lights.local,
                                 saturation: raw
                             })
@@ -121,7 +129,7 @@ function LightsPanel() {
                         const raw = convertToRawFromBrightness(value);
                         dispatch(localBrightnessChanged(raw));
                         dispatch(
-                            remoteSetLightsRequest({
+                            remoteSetLightsRequested({
                                 ...lights.local,
                                 brightness: raw
                             })
