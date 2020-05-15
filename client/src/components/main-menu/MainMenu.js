@@ -3,11 +3,11 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import ToggleButton from "../toggle-button/ToggleButton";
 import {
-    mainMenuLightsPanelActivated,
-    mainMenuNetworkPanelActivated,
-    mainMenuSensorsPanelActivated,
-    mainMenuSettingsPanelActivated
-} from "../../actions";
+    lightsPanelActivated,
+    networkPanelActivated,
+    sensorsPanelActivated,
+    settingsPanelActivated
+} from "../../actions/mainMenuActions";
 
 const Wrapper = styled.div`
     width: 96%;
@@ -31,7 +31,7 @@ function MainMenu() {
     return (
         <Wrapper>
             <ToggleButton
-                onClick={() => dispatch(mainMenuLightsPanelActivated())}
+                onClick={() => dispatch(lightsPanelActivated())}
                 state={mainMenu.lightsPanelActive}
                 labelOn="Light"
                 labelOff="Light"
@@ -40,7 +40,7 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(mainMenuNetworkPanelActivated())}
+                onClick={() => dispatch(networkPanelActivated())}
                 state={mainMenu.networkPanelActive}
                 labelOn="Network"
                 labelOff="Network"
@@ -49,7 +49,7 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(mainMenuSensorsPanelActivated())}
+                onClick={() => dispatch(sensorsPanelActivated())}
                 state={mainMenu.sensorsPanelActive}
                 labelOn="Sensors"
                 labelOff="Sensors"
@@ -58,7 +58,7 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(mainMenuSettingsPanelActivated())}
+                onClick={() => dispatch(settingsPanelActivated())}
                 state={mainMenu.settingsPanelActive}
                 labelOn="Settings"
                 labelOff="Settings"

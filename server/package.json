@@ -14,6 +14,7 @@
         "@babel/preset-env": "^7.9.6",
         "babel-core": "^7.0.0-bridge.0",
         "babel-node": "0.0.1-security",
+        "body-parser": "^1.19.0",
         "chalk-animation": "^1.6.0",
         "cli-progress": "^3.8.2",
         "colors": "^1.4.0",
@@ -23,6 +24,7 @@
         "socket.io": "^2.3.0"
     },
     "devDependencies": {
-        "babel-jest": "^25.5.1"
+        "babel-jest": "^25.5.1",
+        "cors": "^2.8.5"
     }
 }
