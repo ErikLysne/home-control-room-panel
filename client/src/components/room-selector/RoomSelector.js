@@ -17,7 +17,7 @@ const Label = styled.label`
 const Select = styled.select`
     width: 200px;
     height: 50px;
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(38, 39, 44);
     color: rgb(255, 255, 255);
 `;
 

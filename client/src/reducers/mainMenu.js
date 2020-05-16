@@ -1,8 +1,7 @@
 const initialState = {
-    lightsPanelActive: true,
-    networkPanelActive: false,
-    sensorsPanelActive: false,
-    settingsPanelActive: false
+    activePanelIndexCurrent: 0,
+    activePanelIndexPrevious: 0,
+    isAnimatingTransition: false
 };
 
 const mainMenu = (state = initialState, action) => {
@@ -10,34 +9,42 @@ const mainMenu = (state = initialState, action) => {
         case "mainMenu/lightsPanelActivated":
             return {
                 ...state,
-                lightsPanelActive: true,
-                networkPanelActive: false,
-                sensorsPanelActive: false,
-                settingsPanelActive: false
+                activePanelIndexCurrent: 0,
+                activePanelIndexPrevious: action.previousIndex,
+                isAnimatingTransition: true
             };
         case "mainMenu/networkPanelActivated":
             return {
                 ...state,
-                lightsPanelActive: false,
-                networkPanelActive: true,
-                sensorsPanelActive: false,
-                settingsPanelActive: false
+                activePanelIndexCurrent: 1,
+                activePanelIndexPrevious: action.previousIndex,
+                isAnimatingTransition: true
             };
         case "mainMenu/sensorsPanelActivated":
             return {
                 ...state,
-                lightsPanelActive: false,
-                networkPanelActive: false,
-                sensorsPanelActive: true,
-                settingsPanelActive: false
+                activePanelIndexCurrent: 2,
+                activePanelIndexPrevious: action.previousIndex,
+                isAnimatingTransition: true
             };
         case "mainMenu/settingsPanelActivated":
             return {
                 ...state,
-                lightsPanelActive: false,
-                networkPanelActive: false,
-                sensorsPanelActive: false,
-                settingsPanelActive: true
+                activePanelIndexCurrent: 3,
+                activePanelIndexPrevious: action.previousIndex,
+                isAnimatingTransition: true
+            };
+        case "mainMenu/activePanelIndexChanged":
+            return {
+                ...state,
+                activePanelIndexCurrent: action.currentIndex,
+                activePanelIndexPrevious: action.previousIndex,
+                isAnimatingTransition: true
+            };
+        case "mainMenu/transitionAnimationFinished":
+            return {
+                ...state,
+                isAnimatingTransition: false
             };
         default:
             return state;

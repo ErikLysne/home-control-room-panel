@@ -3,38 +3,37 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import ToggleButton from "../toggle-button/ToggleButton";
 import LightsInfo from "../lights-info/LightsInfo";
-import LightSlider from "../light-slider/LightSlider";
 import {
     localOnChanged,
-    localHueChanged,
-    localSaturationChanged,
-    localBrightnessChanged,
     remoteGetLightsRequested,
     remoteSetLightsRequested
 } from "../../actions/lightsActions";
 import { remoteGetGroupsRequested } from "../../actions/settingsActions";
+import { lightSlidersWindowOpened } from "../../actions/windowsActions";
 
-const Wrapper = styled.div`
+const Container = styled.div`
     width: 100%;
     height: 100%;
+    vertical-align: middle;
 `;
 
-const InfoWrapper = styled.div`
-    width: 50%;
-    height: 120px;
-    float: right;
-`;
-const StateButtonWrapper = styled.div`
-    width: 45%;
-    height: 120px;
+const StateButtonContainer = styled.div`
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 `;
 
-const SliderWrapper = styled.div`
-    width: 300px;
-    margin: 0 auto;
+const ModeButtonContainer = styled.div`
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const InfoContainer = styled.div`
+    width: 50%;
 `;
 
 function LightsPanel() {
@@ -43,7 +42,9 @@ function LightsPanel() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(remoteGetGroupsRequested());
+        if (!settings.remote.pending) {
+            dispatch(remoteGetGroupsRequested());
+        }
     }, [dispatch]);
 
     useEffect(() => {
@@ -52,24 +53,9 @@ function LightsPanel() {
         }
     }, [settings.local.targetRoom]);
 
-    const convertToRawFromHue = (hue) => Math.round((hue * 65535.0) / 100.0);
-    const convertToRawFromBrightness = (brightness) =>
-        Math.round(1 + (brightness * 253.0) / 100.0);
-    const convertToRawFromSaturation = (saturation) =>
-        Math.round((saturation * 254.0) / 100.0);
-
-    const convertToHueFromRaw = (raw) => Math.round((raw * 100.0) / 65535.0);
-    const convertToBrightnessFromRaw = (raw) =>
-        Math.round(((raw - 1) * 100.0) / 253.0);
-    const convertToSaturationFromRaw = (raw) =>
-        Math.round((raw * 100.0) / 254.0);
-
     return (
-        <Wrapper>
-            <InfoWrapper>
-                <LightsInfo info={lights.local.info} />
-            </InfoWrapper>
-            <StateButtonWrapper>
+        <Container>
+            <StateButtonContainer>
                 <ToggleButton
                     state={lights.local.on}
                     onClick={(state) => {
@@ -81,65 +67,45 @@ function LightsPanel() {
                             })
                         );
                     }}
+                    disableWhenUntoggled={true}
                     labelOn="On"
                     labelOff="Off"
                     iconOn="/images/icons/On.png"
                     iconOff="/images/icons/Off.png"
                     size="large"
                 />
-            </StateButtonWrapper>
-            <SliderWrapper>
-                <LightSlider
-                    property={"Hue"}
-                    backgroundImage={"/images/HueSlider.png"}
-                    value={convertToHueFromRaw(lights.local.hue)}
-                    onChange={(value) => {
-                        const raw = convertToRawFromHue(value);
-                        dispatch(localHueChanged(raw));
-                        dispatch(
-                            remoteSetLightsRequested({
-                                ...lights.local,
-                                hue: raw
-                            })
-                        );
+            </StateButtonContainer>
+            <ModeButtonContainer>
+                <ToggleButton
+                    state={false}
+                    onClick={() => {
+                        dispatch(lightSlidersWindowOpened());
                     }}
-                    active={lights.local.on}
+                    disableWhenUntoggled={false}
+                    label={"Sliders"}
+                    icon="/images/icons/Sliders.png"
+                    size={"medium"}
                 />
-                <LightSlider
-                    property={"Saturation"}
-                    backgroundImage={"/images/SaturationSlider.png"}
-                    value={convertToSaturationFromRaw(lights.local.saturation)}
-                    onChange={(value) => {
-                        const raw = convertToRawFromSaturation(value);
-                        dispatch(localSaturationChanged(raw));
-                        dispatch(
-                            remoteSetLightsRequested({
-                                ...lights.local,
-                                saturation: raw
-                            })
-                        );
-                    }}
-                    active={lights.local.on}
+                <ToggleButton
+                    state={false}
+                    onClick={() => {}}
+                    disableWhenUntoggled={false}
+                    label={"Scenes"}
+                    icon="/images/icons/Scenes.png"
+                    size={"medium"}
                 />
-                <LightSlider
-                    property={"Brightness"}
-                    backgroundImage={"/images/BrightnessSlider.png"}
-                    value={convertToBrightnessFromRaw(lights.local.brightness)}
-                    onChange={(value) => {
-                        const raw = convertToRawFromBrightness(value);
-                        dispatch(localBrightnessChanged(raw));
-                        dispatch(
-                            remoteSetLightsRequested({
-                                ...lights.local,
-                                brightness: raw
-                            })
-                        );
-                    }}
-                    active={lights.local.on}
-                />
-            </SliderWrapper>
-        </Wrapper>
+            </ModeButtonContainer>
+            <InfoContainer>
+                <LightsInfo info={lights.local.info} />
+            </InfoContainer>
+        </Container>
     );
 }
+
+/*
+<SliderWrapper>
+                
+            </SliderWrapper>
+            */
 
 export default LightsPanel;
