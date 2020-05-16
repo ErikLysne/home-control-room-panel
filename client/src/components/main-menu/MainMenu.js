@@ -9,19 +9,19 @@ import {
     settingsPanelActivated
 } from "../../actions/mainMenuActions";
 
-const Wrapper = styled.div`
-    width: 96%;
+const Container = styled.div`
+    width: 450px;
     height: 120px;
     position: absolute;
     top: 80px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    left: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(26, 26, 26);
+    background-color: rgb(38, 39, 44);
+    opacity: 0.9;
+    border-style: ridge;
+    border-color: rgb(50, 90, 110);
 `;
 
 function MainMenu() {
@@ -29,10 +29,15 @@ function MainMenu() {
     const dispatch = useDispatch();
 
     return (
-        <Wrapper>
+        <Container>
             <ToggleButton
-                onClick={() => dispatch(lightsPanelActivated())}
-                state={mainMenu.lightsPanelActive}
+                onClick={() =>
+                    dispatch(
+                        lightsPanelActivated(mainMenu.activePanelIndexCurrent)
+                    )
+                }
+                state={mainMenu.activePanelIndexCurrent === 0}
+                disableWhenUntoggled={true}
                 labelOn="Light"
                 labelOff="Light"
                 iconOn="/images/icons/Lights.png"
@@ -40,8 +45,13 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(networkPanelActivated())}
-                state={mainMenu.networkPanelActive}
+                onClick={() =>
+                    dispatch(
+                        networkPanelActivated(mainMenu.activePanelIndexCurrent)
+                    )
+                }
+                state={mainMenu.activePanelIndexCurrent === 1}
+                disableWhenUntoggled={true}
                 labelOn="Network"
                 labelOff="Network"
                 iconOn="/images/icons/Network.png"
@@ -49,8 +59,13 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(sensorsPanelActivated())}
-                state={mainMenu.sensorsPanelActive}
+                onClick={() =>
+                    dispatch(
+                        sensorsPanelActivated(mainMenu.activePanelIndexCurrent)
+                    )
+                }
+                state={mainMenu.activePanelIndexCurrent === 2}
+                disableWhenUntoggled={true}
                 labelOn="Sensors"
                 labelOff="Sensors"
                 iconOn="/images/icons/Sensors.png"
@@ -58,15 +73,20 @@ function MainMenu() {
                 size="medium"
             />
             <ToggleButton
-                onClick={() => dispatch(settingsPanelActivated())}
-                state={mainMenu.settingsPanelActive}
+                onClick={() =>
+                    dispatch(
+                        settingsPanelActivated(mainMenu.activePanelIndexCurrent)
+                    )
+                }
+                state={mainMenu.activePanelIndexCurrent === 3}
+                disableWhenUntoggled={true}
                 labelOn="Settings"
                 labelOff="Settings"
                 iconOn="/images/icons/Settings.png"
                 iconOff="/images/icons/Settings.png"
                 size="medium"
             />
-        </Wrapper>
+        </Container>
     );
 }
 

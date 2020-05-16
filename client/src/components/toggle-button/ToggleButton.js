@@ -42,11 +42,13 @@ const LargeLabel = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
+    opacity: ${(props) =>
+        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
 const MediumLabel = styled.div`
-    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
+    opacity: ${(props) =>
+        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
 const Logo = styled.div`
@@ -59,10 +61,28 @@ const Logo = styled.div`
         props.toggled ? props.iconOn : props.iconOff});
     background-repeat: no-repeat;
     background-position: center;
-    opacity: ${(props) => (props.toggled ? 100 : 50)}%;
+    opacity: ${(props) =>
+        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
 function ToggleButton(props) {
+    let labelOn;
+    let labelOff;
+    let iconOn;
+    let iconOff;
+
+    if (!props.disableWhenUntoggled) {
+        labelOn = props.label;
+        labelOff = props.label;
+        iconOn = props.icon;
+        iconOff = props.icon;
+    } else {
+        labelOn = props.labelOn;
+        labelOff = props.labelOff;
+        iconOn = props.iconOn;
+        iconOff = props.iconOff;
+    }
+
     const handleClickEvent = (event) => {
         props.onClick(!props.state);
     };
@@ -72,20 +92,28 @@ function ToggleButton(props) {
             size={props.size}
             toggled={props.state}
             onClick={handleClickEvent}
+            disableWhenUntoggled={props.disableWhenUntoggled}
         >
             {props.size === "large" && (
-                <LargeLabel toggled={props.state}>
-                    {props.state ? props.labelOn : props.labelOff}
+                <LargeLabel
+                    toggled={props.state}
+                    disableWhenUntoggled={props.disableWhenUntoggled}
+                >
+                    {props.state ? labelOn : labelOff}
                 </LargeLabel>
             )}
             <Logo
                 toggled={props.state}
-                iconOn={props.iconOn}
-                iconOff={props.iconOff}
+                iconOn={iconOn}
+                iconOff={iconOff}
+                disableWhenUntoggled={props.disableWhenUntoggled}
             />
             {props.size !== "large" && (
-                <MediumLabel toggled={props.state}>
-                    {props.state ? props.labelOn : props.labelOff}
+                <MediumLabel
+                    toggled={props.state}
+                    disableWhenUntoggled={props.disableWhenUntoggled}
+                >
+                    {props.state ? labelOn : labelOff}
                 </MediumLabel>
             )}
         </Button>

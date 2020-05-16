@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-    width: 100vw;
+const Container = styled.div`
+    width: 481px;
     height: 50px;
     position: absolute;
     top: 20px;
-    left: 0;
+    left: -1px;
 `;
 
 const Background = styled.div`
@@ -33,10 +33,10 @@ const Logo = styled.div`
 
 function LogoBar() {
     return (
-        <Wrapper>
+        <Container>
             <Background />
             <Logo />
-        </Wrapper>
+        </Container>
     );
 }
 

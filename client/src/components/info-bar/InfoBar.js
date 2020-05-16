@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-    width: 100vw;
+const Container = styled.div`
+    width: 480px;
     height: 20px;
     position: absolute;
     top: 0;
@@ -39,7 +39,7 @@ function InfoBar() {
             "Sep",
             "Oct",
             "Nov",
-            "Dec",
+            "Dec"
         ];
 
         return date.getDate() + ". " + months[date.getMonth()];
@@ -53,7 +53,7 @@ function InfoBar() {
             "Wednesday",
             "Thursday",
             "Friday",
-            "Saturday",
+            "Saturday"
         ];
 
         return days[date.getDay()];
@@ -68,11 +68,11 @@ function InfoBar() {
     });
 
     return (
-        <Wrapper>
+        <Container>
             <InfoBarItem>{formatDate(date)}</InfoBarItem>
             <InfoBarItem>{formatTime(date)}</InfoBarItem>
             <InfoBarItem>{formatDay(date)}</InfoBarItem>
-        </Wrapper>
+        </Container>
     );
 }
 

@@ -13,6 +13,8 @@ import LogoBar from "./components/logo-bar/LogoBar";
 import MainMenu from "./components/main-menu/MainMenu";
 import MainPanel from "./components/main-panel/MainPanel";
 
+import WindowContainer from "./components/window-container/WindowContainer";
+
 const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(logger, thunk))
@@ -26,6 +28,7 @@ function App() {
             <LogoBar />
             <MainMenu />
             <MainPanel />
+            <WindowContainer />
         </Provider>
     );
 }
