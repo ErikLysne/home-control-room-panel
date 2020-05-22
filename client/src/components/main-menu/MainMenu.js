@@ -2,30 +2,24 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import ToggleButton from "../toggle-button/ToggleButton";
-import {
-    lightsPanelActivated,
-    networkPanelActivated,
-    sensorsPanelActivated,
-    settingsPanelActivated
-} from "../../actions/mainMenuActions";
+import { menuActions } from "../../ducks/menu";
 
 const Container = styled.div`
-    width: 450px;
+    width: 90vw;
     height: 120px;
     position: absolute;
     top: 80px;
-    left: 15px;
+    left: 2.5vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(38, 39, 44);
-    opacity: 0.9;
-    border-style: ridge;
-    border-color: rgb(50, 90, 110);
+    background-color: rgb(5, 17, 25);
+    opacity: 0.8;
+    box-shadow: 0px 0px 5px 2px rgba(211, 226, 252, 0.75);
 `;
 
 function MainMenu() {
-    const mainMenu = useSelector((state) => state.mainMenu);
+    const { activePanelIndexCurrent } = useSelector((state) => state.menu);
     const dispatch = useDispatch();
 
     return (
@@ -33,10 +27,12 @@ function MainMenu() {
             <ToggleButton
                 onClick={() =>
                     dispatch(
-                        lightsPanelActivated(mainMenu.activePanelIndexCurrent)
+                        menuActions.lightsPanelActivated(
+                            activePanelIndexCurrent
+                        )
                     )
                 }
-                state={mainMenu.activePanelIndexCurrent === 0}
+                state={activePanelIndexCurrent === 0}
                 disableWhenUntoggled={true}
                 labelOn="Light"
                 labelOff="Light"
@@ -47,10 +43,12 @@ function MainMenu() {
             <ToggleButton
                 onClick={() =>
                     dispatch(
-                        networkPanelActivated(mainMenu.activePanelIndexCurrent)
+                        menuActions.networkPanelActivated(
+                            activePanelIndexCurrent
+                        )
                     )
                 }
-                state={mainMenu.activePanelIndexCurrent === 1}
+                state={activePanelIndexCurrent === 1}
                 disableWhenUntoggled={true}
                 labelOn="Network"
                 labelOff="Network"
@@ -61,10 +59,12 @@ function MainMenu() {
             <ToggleButton
                 onClick={() =>
                     dispatch(
-                        sensorsPanelActivated(mainMenu.activePanelIndexCurrent)
+                        menuActions.sensorsPanelActivated(
+                            activePanelIndexCurrent
+                        )
                     )
                 }
-                state={mainMenu.activePanelIndexCurrent === 2}
+                state={activePanelIndexCurrent === 2}
                 disableWhenUntoggled={true}
                 labelOn="Sensors"
                 labelOff="Sensors"
@@ -75,10 +75,12 @@ function MainMenu() {
             <ToggleButton
                 onClick={() =>
                     dispatch(
-                        settingsPanelActivated(mainMenu.activePanelIndexCurrent)
+                        menuActions.settingsPanelActivated(
+                            activePanelIndexCurrent
+                        )
                     )
                 }
-                state={mainMenu.activePanelIndexCurrent === 3}
+                state={activePanelIndexCurrent === 3}
                 disableWhenUntoggled={true}
                 labelOn="Settings"
                 labelOff="Settings"

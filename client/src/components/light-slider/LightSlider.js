@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Container = styled.div`
     width: 100%;
     height: 30px;
     padding-top: 30px;
     opacity: ${(props) => (props.active ? 100 : 50)}%;
 `;
 
-const LabelWrapper = styled.div`
+const LabelContainer = styled.div`
     width: 100%;
     height: 100%;
 `;
@@ -23,7 +23,7 @@ const Label = styled.div`
     color: rgb(255, 255, 255);
 `;
 
-const StyledSlider = styled.input`
+const Slider = styled.input`
     width: 282px;
     height: 22px;
     margin: 2px;
@@ -46,12 +46,12 @@ function LightSlider(props) {
     };
 
     return (
-        <Wrapper active={props.active}>
-            <LabelWrapper>
+        <Container active={props.active}>
+            <LabelContainer>
                 <Label>{props.property}</Label>
                 <Label>{props.value}</Label>
-            </LabelWrapper>
-            <StyledSlider
+            </LabelContainer>
+            <Slider
                 onChange={handleValueChangeEvent}
                 type="range"
                 min="1"
@@ -60,7 +60,7 @@ function LightSlider(props) {
                 value={props.value}
                 backgroundImage={props.backgroundImage}
             />
-        </Wrapper>
+        </Container>
     );
 }
 

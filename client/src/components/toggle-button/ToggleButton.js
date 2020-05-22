@@ -2,11 +2,29 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const Button = styled.button`
-    width: ${(props) => (props.size === "large" ? 192 : 101)}px;
-    height: 101px;
+    width: ${(props) =>
+        props.size === "large"
+            ? 192
+            : props.size === "medium"
+            ? 101
+            : props.size === "small"
+            ? 101
+            : 0}px;
+    height: ${(props) =>
+        props.size === "large"
+            ? 101
+            : props.size === "medium"
+            ? 101
+            : props.size === "small"
+            ? 52
+            : 0}px;
     margin: auto 5px;
     ${(props) =>
         props.size === "large"
+            ? "display: flex; justify-content: center; align-items: center;"
+            : props.size === "medium"
+            ? ""
+            : props.size === "small"
             ? "display: flex; justify-content: center; align-items: center;"
             : ""}
     border-style: none;
@@ -15,8 +33,10 @@ const Button = styled.button`
             ? "/images/LargeButton.png"
             : props.size === "medium"
             ? "/images/MediumButton.png"
+            : props.size === "small"
+            ? "/images/SmallButton.png"
             : ""}");
-    color: rgb(255, 255, 255);
+    color: rgb(200, 220, 230);
 
     animation-name: ${(props) => (props.toggled ? buttonToggledKeyframes : "")};
     animation-duration: 0.5s;
@@ -27,10 +47,10 @@ const Button = styled.button`
 
 const buttonToggledKeyframes = keyframes`
     0% {
-        box-shadow: 0 0 2px 2px rgba(8, 200, 255, 0.25);
+        box-shadow: 0 0 2px 2px rgba(211, 226, 252, 0.25);
     }
     100% {
-        box-shadow: 0 0 4px 4px rgba(8, 200, 255, 0.25);
+        box-shadow: 0 0 4px 4px rgba(211, 226, 252, 0.25);
     }
 `;
 
@@ -51,11 +71,43 @@ const MediumLabel = styled.div`
         props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
+const SmallLabel = styled.div`
+    width: 50%;
+    height: 100%;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: ${(props) =>
+        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
+`;
+
 const Logo = styled.div`
-    width: 50px;
-    height: 50px;
+    width: ${(props) =>
+        props.size === "large"
+            ? 50
+            : props.size === "medium"
+            ? 50
+            : props.size === "small"
+            ? 28
+            : 0}px;
+    height: ${(props) =>
+        props.size === "large"
+            ? 50
+            : props.size === "medium"
+            ? 50
+            : props.size === "small"
+            ? 28
+            : 0}px;
     padding: 20px 0 5px;
-    ${(props) => (props.size === "large" ? "float: right;" : "")};
+    ${(props) =>
+        props.size === "large"
+            ? "float: right;"
+            : props.size === "medium"
+            ? ""
+            : props.size === "small"
+            ? "float: left;"
+            : ""};
     margin: auto auto;
     background-image: url(${(props) =>
         props.toggled ? props.iconOn : props.iconOff});
@@ -103,18 +155,27 @@ function ToggleButton(props) {
                 </LargeLabel>
             )}
             <Logo
+                size={props.size}
                 toggled={props.state}
                 iconOn={iconOn}
                 iconOff={iconOff}
                 disableWhenUntoggled={props.disableWhenUntoggled}
             />
-            {props.size !== "large" && (
+            {props.size === "medium" && (
                 <MediumLabel
                     toggled={props.state}
                     disableWhenUntoggled={props.disableWhenUntoggled}
                 >
                     {props.state ? labelOn : labelOff}
                 </MediumLabel>
+            )}
+            {props.size === "small" && (
+                <SmallLabel
+                    toggled={props.state}
+                    disableWhenUntoggled={props.disableWhenUntoggled}
+                >
+                    {props.state ? labelOn : labelOff}
+                </SmallLabel>
             )}
         </Button>
     );

@@ -1,7 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Container = styled.div`
     width: 40%;
     height: 80%;
     margin: 10% 0;
@@ -20,9 +21,9 @@ const NetworkStatusIcon = styled.div`
     width: 100%;
     height: 100%;
     background-image: url(${(props) =>
-        props.loading === true
+        props.pending
             ? "/images/LoadingSpinner.gif"
-            : props.serverStatus === "Online"
+            : props.online
             ? "/images/icons/Success.png"
             : "/images/icons/Fail.png"});
     background-repeat: no-repeat;
@@ -30,31 +31,29 @@ const NetworkStatusIcon = styled.div`
 `;
 
 function NetworkConnectivityIndicator(props) {
-    const networkInfo = props.networkInfo;
-
     /*
         networkInfo.loading converted to integer before passing as prop due to issue with styled components
         https://github.com/styled-components/styled-components/issues/1198
     */
 
     return (
-        <Wrapper>
+        <Container>
             <Icon icon={"/images/icons/Device.png"} />
             <Icon icon={"/images/icons/ConnectivityIndicator.png"}>
                 <NetworkStatusIcon
-                    loading={networkInfo.loading ? 1 : 0}
-                    serverStatus={networkInfo.serverStatus}
+                    pending={props.network.pending ? 1 : 0}
+                    online={props.network.serverOnline}
                 />
             </Icon>
             <Icon icon={"/images/icons/Server.png"} />
             <Icon icon={"/images/icons/ConnectivityIndicator.png"}>
                 <NetworkStatusIcon
-                    loading={networkInfo.loading ? 1 : 0}
-                    serverStatus={networkInfo.serverStatus}
+                    pending={props.network.pending ? 1 : 0}
+                    online={props.network.bridgeOnline}
                 />
             </Icon>
             <Icon icon={"/images/icons/HueBridge.png"} />
-        </Wrapper>
+        </Container>
     );
 }
 

@@ -4,12 +4,7 @@ import styled from "styled-components";
 import Window from "../window/Window";
 import LightSlider from "../light-slider/LightSlider";
 import { lightSlidersWindowClosed } from "../../actions/windowsActions";
-import {
-    localHueChanged,
-    localSaturationChanged,
-    localBrightnessChanged,
-    remoteSetLightsRequested
-} from "../../actions/lightsActions";
+import { lightsActions, lightsOperations } from "../../ducks/lights";
 
 const SliderContainer = styled.div`
     width: 300px;
@@ -44,9 +39,9 @@ function LightSlidersWindow(props) {
                     value={convertToHueFromRaw(lights.local.hue)}
                     onChange={(value) => {
                         const raw = convertToRawFromHue(value);
-                        dispatch(localHueChanged(raw));
+                        dispatch(lightsActions.localHueChanged(raw));
                         dispatch(
-                            remoteSetLightsRequested({
+                            lightsOperations.setLightsRequested({
                                 ...lights.local,
                                 hue: raw
                             })
@@ -60,9 +55,9 @@ function LightSlidersWindow(props) {
                     value={convertToSaturationFromRaw(lights.local.saturation)}
                     onChange={(value) => {
                         const raw = convertToRawFromSaturation(value);
-                        dispatch(localSaturationChanged(raw));
+                        dispatch(lightsActions.localSaturationChanged(raw));
                         dispatch(
-                            remoteSetLightsRequested({
+                            lightsOperations.setLightsRequested({
                                 ...lights.local,
                                 saturation: raw
                             })
@@ -76,9 +71,9 @@ function LightSlidersWindow(props) {
                     value={convertToBrightnessFromRaw(lights.local.brightness)}
                     onChange={(value) => {
                         const raw = convertToRawFromBrightness(value);
-                        dispatch(localBrightnessChanged(raw));
+                        dispatch(lightsActions.localBrightnessChanged(raw));
                         dispatch(
-                            remoteSetLightsRequested({
+                            lightsOperations.setLightsRequested({
                                 ...lights.local,
                                 brightness: raw
                             })

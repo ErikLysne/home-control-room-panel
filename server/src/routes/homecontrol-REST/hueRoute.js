@@ -38,7 +38,7 @@ const sendHueInvalidGroupNameErrorResponse = (groupName, res) => {
 
 router.route("/lights/status").get((req, res) => {
     hue.testBridgeConnection().then((status) =>
-        res.send({ bridge_status: status ? "online" : "offline" })
+        res.send({ bridgeStatus: status ? "online" : "offline" })
     );
 });
 

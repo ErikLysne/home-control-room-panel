@@ -5,25 +5,13 @@ import LightsPanel from "../lights-panel/LightsPanel";
 import NetworkPanel from "../network-panel/NetworkPanel";
 import SettingsPanel from "../settings-panel/SettingsPanel";
 
-const Margin = styled.div`
-    width: 95%;
-    height: 95%;
-    margin: 2.5%;
-`;
-
 function MainPanel() {
     return (
         <Carousel>
-            <Margin>
-                <LightsPanel />
-            </Margin>
-            <Margin>
-                <NetworkPanel />
-            </Margin>
+            <LightsPanel />
+            <NetworkPanel />
             <div />
-            <Margin>
-                <SettingsPanel />
-            </Margin>
+            <SettingsPanel />
         </Carousel>
     );
 }
