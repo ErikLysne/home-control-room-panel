@@ -4,6 +4,7 @@ import { createStore, applyMiddleware } from "redux";
 import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import styled from "styled-components";
 import rootReducer from "./reducers";
 
 // Components
@@ -20,15 +21,23 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(logger, thunk))
 );
 
+const Container = styled.div`
+    position: relative;
+    width: 100vw;
+    overflow: hidden;
+`;
+
 function App() {
     return (
         <Provider store={store}>
-            <Background />
-            <InfoBar />
-            <LogoBar />
-            <MainMenu />
-            <MainPanel />
-            <WindowContainer />
+            <Container>
+                <Background />
+                <InfoBar />
+                <LogoBar />
+                <MainMenu />
+                <MainPanel />
+                <WindowContainer />
+            </Container>
         </Provider>
     );
 }

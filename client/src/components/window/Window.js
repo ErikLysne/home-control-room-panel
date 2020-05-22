@@ -10,8 +10,7 @@ const Container = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     background-color: rgb(38, 39, 44);
-    border-style: ridge;
-    border-color: rgb(50, 90, 110);
+    box-shadow: 0px 0px 5px 2px rgba(50, 90, 110, 0.75);
     opacity: 0.9;
     overflow: hidden;
     animation: ${(props) =>
@@ -60,7 +59,7 @@ const HeaderBar = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgb(135, 179, 222);
+    background-color: rgba(135, 179, 222, 0.5);
     text-align: center;
     color: rgb(255, 255, 255);
 `;

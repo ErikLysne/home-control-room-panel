@@ -4,7 +4,19 @@ import styled from "styled-components";
 const Table = styled.table`
     width: 100%;
     height: 100%;
-    color: rgb(255, 255, 255);
+    color: rgb(200, 220, 230);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const TdLabel = styled.td`
+    padding: 0 5px;
+    color: rgb(20, 232, 255);
+`;
+
+const TdData = styled.td`
+    padding: 0 5px;
 `;
 
 function LightsInfo(props) {
@@ -14,20 +26,36 @@ function LightsInfo(props) {
         <Table>
             <tbody>
                 <tr>
-                    <td>Room:</td>
-                    <td>{info.name}</td>
+                    <TdLabel>Room:</TdLabel>
+                    <TdData>{info.name}</TdData>
                 </tr>
                 <tr>
-                    <td>Mode:</td>
-                    <td>{info.mode}</td>
+                    <TdLabel>Mode:</TdLabel>
+                    <TdData>{info.mode}</TdData>
                 </tr>
                 <tr>
-                    <td>Lights:</td>
-                    <td>{info.lights.length}</td>
+                    <TdLabel>Color mode:</TdLabel>
+                    <TdData>
+                        {info.colorMode === "hs"
+                            ? "Hue/Saturation"
+                            : info.colorMode === "ct"
+                            ? "Color Temperature"
+                            : info.colorMode === "xy"
+                            ? "XY"
+                            : ""}
+                    </TdData>
                 </tr>
                 <tr>
-                    <td>All on:</td>
-                    <td>{info.allOn ? "Yes" : "No"}</td>
+                    <TdLabel>Lights:</TdLabel>
+                    <TdData>{info.lights.length}</TdData>
+                </tr>
+                <tr>
+                    <TdLabel>All on:</TdLabel>
+                    <TdData>{info.allOn ? "Yes" : "No"}</TdData>
+                </tr>
+                <tr>
+                    <TdLabel>Any on:</TdLabel>
+                    <TdData>{info.anyOn ? "Yes" : "No"}</TdData>
                 </tr>
             </tbody>
         </Table>

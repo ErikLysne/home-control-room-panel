@@ -6,16 +6,15 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    //background-color: rgb(20, 25, 30);
-    background: linear-gradient(rgb(51, 51, 61), rgb(31, 31, 43));
+    background: linear-gradient(rgb(31, 31, 43), rgb(12, 30, 40));
 `;
 
 function Background() {
     return (
         <Container>
             <Particles
-                width={480}
-                height={800}
+                width={"100vw"}
+                height={"100vh"}
                 params={{
                     particles: {
                         number: {

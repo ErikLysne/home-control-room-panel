@@ -1,42 +1,35 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled, { keyframes } from "styled-components";
-import {
-    activePanelIndexChanged,
-    transitionAnimationFinished
-} from "../../actions/mainMenuActions";
+import { menuActions } from "../../ducks/menu";
 
 const Container = styled.div`
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    width: ${(props) => props.width}vw;
+    height: ${(props) => props.height}vh;
     position: absolute;
     top: 220px;
     left: 0;
-    margin: 0 auto;
     overflow: hidden;
-    perspective: 4000px;
+    perspective: 2000px;
 `;
 
 const Panel = styled.div`
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    width: ${(props) => props.width}vw;
+    height: ${(props) => props.height}vh;
     position: absolute;
-    left: 15px;
+    left: 2.5vw;
     top: 15px;
-    background-color: rgb(38, 39, 44);
-    border-style: ridge;
-    border-color: rgb(50, 90, 110);
+    background-color: rgb(5, 17, 25);
+    box-shadow: 0px 0px 5px 2px rgba(211, 226, 252, 0.75);
     transform-style: preserve-3d;
     z-index: ${(props) =>
         zIndex(props.index, props.activeIndexCurrent, props.numberOfPanels)};
     opacity: ${(props) =>
         zIndex(props.index, props.activeIndexCurrent, props.numberOfPanels) ===
         0
-            ? 0.9
+            ? 0.8
             : 0};
     animation: ${(props) => {
-            console.log(props.activeIndexCurrent);
-            console.log(props.activeIndexPrevious);
             return props.animate
                 ? animateTransition(
                       props.width,
@@ -127,11 +120,11 @@ const transform = (
     // Rotate along y-axis
     transform += ` rotateY(${angleOfRotation}deg)`;
     // Translate outward to apothem + offset
-    transform += ` translateZ(${displacement}px)`;
+    transform += ` translateZ(${displacement}vw)`;
     // Rotate back to original reference frame
     transform += ` rotateY(${-angleOfRotation}deg)`;
     // Translate backwards to keep original size of the front face
-    transform += ` translateZ(${-displacement}px)`;
+    transform += ` translateZ(${-displacement}vw)`;
     // Rotate back
     //transform += ` rotateY(${angleOfRotation}deg)`;
 
@@ -170,17 +163,17 @@ function Carousel(props) {
     const {
         activePanelIndexCurrent,
         activePanelIndexPrevious,
-        isAnimatingTransition
-    } = useSelector((state) => state.mainMenu);
+        isTransitioning
+    } = useSelector((state) => state.menu);
     const dispatch = useDispatch();
 
     const numberOfPanels = props.children.length;
 
     const rotateRight = () => {
-        if (isAnimatingTransition) return;
+        if (isTransitioning) return;
 
         dispatch(
-            activePanelIndexChanged(
+            menuActions.activePanelIndexChanged(
                 activePanelIndexCurrent >= numberOfPanels - 1
                     ? 0
                     : activePanelIndexCurrent + 1,
@@ -190,10 +183,10 @@ function Carousel(props) {
     };
 
     const rotateLeft = () => {
-        if (isAnimatingTransition) return;
+        if (isTransitioning) return;
 
         dispatch(
-            activePanelIndexChanged(
+            menuActions.activePanelIndexChanged(
                 activePanelIndexCurrent === 0
                     ? numberOfPanels - 1
                     : activePanelIndexCurrent - 1,
@@ -203,12 +196,12 @@ function Carousel(props) {
     };
 
     useEffect(() => {
-        if (isAnimatingTransition) {
+        if (isTransitioning) {
             setTimeout(() => {
-                dispatch(transitionAnimationFinished());
+                dispatch(menuActions.transitionFinished());
             }, props.transitionDuration);
         }
-    }, [dispatch, isAnimatingTransition, props.transitionDuration]);
+    }, [dispatch, isTransitioning, props.transitionDuration]);
 
     let index = 0;
     return (
@@ -221,7 +214,7 @@ function Carousel(props) {
                     index={index++}
                     activeIndexCurrent={activePanelIndexCurrent}
                     activeIndexPrevious={activePanelIndexPrevious}
-                    animate={isAnimatingTransition}
+                    animate={isTransitioning}
                     numberOfPanels={numberOfPanels}
                     panelOffset={props.panelOffset}
                     transitionDuration={props.transitionDuration}
@@ -236,12 +229,12 @@ function Carousel(props) {
 }
 
 Carousel.defaultProps = {
-    containerWidth: 480,
-    containerHeight: 480,
-    panelWidth: 450,
-    panelHeight: 450,
+    containerWidth: 100,
+    containerHeight: 80,
+    panelWidth: 90,
+    panelHeight: 60,
     panelOffset: 1,
-    transitionDuration: 500
+    transitionDuration: 1000
 };
 
 export default Carousel;

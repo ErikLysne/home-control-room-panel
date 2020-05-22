@@ -16,7 +16,7 @@ const Button = styled.button`
             : props.size === "medium"
             ? "/images/MediumButton.png"
             : ""}");
-    color: rgb(255, 255, 255);
+    color: rgb(200, 220, 230);
 
     animation-name: ${(props) => (props.toggled ? buttonToggledKeyframes : "")};
     animation-duration: 0.5s;
@@ -27,10 +27,10 @@ const Button = styled.button`
 
 const buttonToggledKeyframes = keyframes`
     0% {
-        box-shadow: 0 0 2px 2px rgba(8, 200, 255, 0.25);
+        box-shadow: 0 0 2px 2px rgba(211, 226, 252, 0.25);
     }
     100% {
-        box-shadow: 0 0 4px 4px rgba(8, 200, 255, 0.25);
+        box-shadow: 0 0 4px 4px rgba(211, 226, 252, 0.25);
     }
 `;
 

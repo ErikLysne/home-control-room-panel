@@ -1,14 +1,14 @@
 import { combineReducers } from "redux";
-import mainMenu from "./mainMenu";
+import menu from "../ducks/menu";
 import windows from "./windows";
-import lights from "./lights";
-import networkInfo from "./networkInfo";
-import settings from "./settings";
+import lights from "../ducks/lights";
+import network from "../ducks/network";
+import config from "../ducks/config";
 
 export default combineReducers({
-    mainMenu,
+    menu,
     windows,
     lights,
-    networkInfo,
-    settings
+    network,
+    config
 });
