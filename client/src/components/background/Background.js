@@ -6,7 +6,7 @@ const Container = styled.div`
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(rgb(31, 31, 43), rgb(12, 30, 40));
+    background: linear-gradient(rgb(3, 20, 30), rgb(0, 0, 0));
 `;
 
 function Background() {

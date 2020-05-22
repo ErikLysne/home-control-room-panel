@@ -22,16 +22,19 @@ const openingAnimation = keyframes`
     0% {
         height: 25px;
         width: 0;
+        opacity: 0;
     }
 
     50% {
         height: 25px;
         width: 400px;
+        opacity: 0.5;
     }
 
     100% {
         height: 400px;
         width: 400px;
+        opacity: 0.9;
     }
 `;
 
@@ -66,7 +69,7 @@ const HeaderBar = styled.div`
 
 const ButtonContainer = styled.div`
     position: absolute;
-    bottom: 10px;
+    bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
 `;
@@ -89,7 +92,7 @@ function Window(props) {
                     disabledWhenUntoggled={false}
                     label="Close"
                     icon="/images/icons/Close.png"
-                    size="medium"
+                    size="small"
                     onClick={handleClickEvent}
                 />
             </ButtonContainer>
