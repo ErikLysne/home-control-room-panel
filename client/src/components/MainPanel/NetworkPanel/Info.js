@@ -21,28 +21,28 @@ const TdData = styled.td`
 
 function NetworkInfo(props) {
     const { network, config } = props;
+    const { serverOnline, serverLatency } = network;
+    const { serverIpAddress, serverPort } = config.local;
+
     return (
         <Table>
             <tbody>
                 <tr>
                     <TdLabel>Server status:</TdLabel>
-                    <TdData>
-                        {network.serverOnline ? "Online" : "Offline"}
-                    </TdData>
+                    <TdData>{serverOnline ? "Online" : "Offline"}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Server IP address:</TdLabel>
-                    <TdData>{config.local.serverIpAddress}</TdData>
+                    <TdData>{serverIpAddress}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Server port:</TdLabel>
-                    <TdData>{config.local.serverPort}</TdData>
+                    <TdData>{serverPort}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Latency:</TdLabel>
                     <TdData>
-                        {network.serverLatency !== 0 &&
-                            network.serverLatency + " ms"}
+                        {serverLatency !== 0 && serverLatency + " ms"}
                     </TdData>
                 </tr>
             </tbody>

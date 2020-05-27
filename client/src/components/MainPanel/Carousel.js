@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import styled, { keyframes } from "styled-components";
-import { menuActions } from "../ducks/menu";
-import CarouselPanel from "./CarouselPanel";
+import styled from "styled-components";
+import { menuActions } from "../../ducks/menu";
+import Panel from "./Panel";
 
 const Container = styled.div`
-    width: ${(props) => props.width}vw;
-    height: ${(props) => props.height}vh;
+    width: ${(props) => props.dimensions.width}vw;
+    height: ${(props) => props.dimensions.height}vh;
     position: absolute;
     top: 100px;
     left: 0;
@@ -32,13 +32,21 @@ const RotateLeftButton = styled(RotationClickableArea)`
 
 function Carousel(props) {
     const {
+        containerDimensions,
+        panelDimensions,
+        panelOffset,
+        transitionDuration,
+        children
+    } = props;
+
+    const numberOfPanels = children.length;
+
+    const {
         activePanelIndexCurrent,
         activePanelIndexPrevious,
         isTransitioning
     } = useSelector((state) => state.menu);
     const dispatch = useDispatch();
-
-    const numberOfPanels = props.children.length;
 
     const rotateRight = () => {
         if (isTransitioning) return;
@@ -70,40 +78,45 @@ function Carousel(props) {
         if (isTransitioning) {
             setTimeout(() => {
                 dispatch(menuActions.transitionFinished());
-            }, props.transitionDuration);
+            }, transitionDuration);
         }
-    }, [dispatch, isTransitioning, props.transitionDuration]);
+    }, [dispatch, isTransitioning, transitionDuration]);
 
     let index = 0;
     return (
-        <Container width={props.containerWidth} height={props.containerHeight}>
-            {React.Children.map(props.children, (child) => (
-                <CarouselPanel
+        <Container dimensions={containerDimensions}>
+            {React.Children.map(children, (child) => (
+                <Panel
                     key={index}
-                    width={props.panelWidth}
-                    height={props.panelHeight}
-                    index={index++}
-                    activeIndexCurrent={activePanelIndexCurrent}
-                    activeIndexPrevious={activePanelIndexPrevious}
-                    animate={isTransitioning}
+                    dimensions={panelDimensions}
+                    index={{
+                        value: index++,
+                        activeCurrent: activePanelIndexCurrent,
+                        activePrevious: activePanelIndexPrevious
+                    }}
                     numberOfPanels={numberOfPanels}
-                    panelOffset={props.panelOffset}
-                    transitionDuration={props.transitionDuration}
+                    panelOffset={panelOffset}
+                    isAnimating={isTransitioning}
+                    transitionDuration={transitionDuration}
                 >
                     {child}
                     <RotateRightButton onClick={rotateRight} />
                     <RotateLeftButton onClick={rotateLeft} />
-                </CarouselPanel>
+                </Panel>
             ))}
         </Container>
     );
 }
 
 Carousel.defaultProps = {
-    containerWidth: 100,
-    containerHeight: 65,
-    panelWidth: 90,
-    panelHeight: 60,
+    containerDimensions: {
+        width: 100,
+        height: 65
+    },
+    panelDimensions: {
+        width: 90,
+        height: 60
+    },
     panelOffset: 1,
     transitionDuration: 1000
 };

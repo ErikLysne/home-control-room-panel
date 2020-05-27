@@ -19,47 +19,48 @@ const TdData = styled.td`
     padding: 0 5px;
 `;
 
-function LightsInfo(props) {
+function Info(props) {
     const { info } = props;
+    const { name, mode, colorMode, lights, allOn, anyOn } = info;
 
     return (
         <Table>
             <tbody>
                 <tr>
                     <TdLabel>Room:</TdLabel>
-                    <TdData>{info.name}</TdData>
+                    <TdData>{name}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Mode:</TdLabel>
-                    <TdData>{info.mode}</TdData>
+                    <TdData>{mode}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Color mode:</TdLabel>
                     <TdData>
-                        {info.colorMode === "hs"
+                        {colorMode === "hs"
                             ? "Hue/Saturation"
-                            : info.colorMode === "ct"
+                            : colorMode === "ct"
                             ? "Color Temperature"
-                            : info.colorMode === "xy"
+                            : colorMode === "xy"
                             ? "XY"
                             : ""}
                     </TdData>
                 </tr>
                 <tr>
                     <TdLabel>Lights:</TdLabel>
-                    <TdData>{info.lights.length}</TdData>
+                    <TdData>{lights.length}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>All on:</TdLabel>
-                    <TdData>{info.allOn ? "Yes" : "No"}</TdData>
+                    <TdData>{allOn ? "Yes" : "No"}</TdData>
                 </tr>
                 <tr>
                     <TdLabel>Any on:</TdLabel>
-                    <TdData>{info.anyOn ? "Yes" : "No"}</TdData>
+                    <TdData>{anyOn ? "Yes" : "No"}</TdData>
                 </tr>
             </tbody>
         </Table>
     );
 }
 
-export default LightsInfo;
+export default Info;

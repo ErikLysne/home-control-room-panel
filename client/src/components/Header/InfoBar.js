@@ -19,45 +19,45 @@ const InfoBarItem = styled.div`
     color: rgb(255, 255, 255);
 `;
 
+const formatTime = (date) => {
+    return date.toLocaleTimeString();
+};
+
+const formatDate = (date) => {
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ];
+
+    return date.getDate() + ". " + months[date.getMonth()];
+};
+
+const formatDay = (date) => {
+    const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+
+    return days[date.getDay()];
+};
+
 function InfoBar() {
     const [date, setDate] = useState(new Date());
-
-    const formatTime = (date) => {
-        return date.toLocaleTimeString();
-    };
-
-    const formatDate = (date) => {
-        const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-        ];
-
-        return date.getDate() + ". " + months[date.getMonth()];
-    };
-
-    const formatDay = (date) => {
-        const days = [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday"
-        ];
-
-        return days[date.getDay()];
-    };
 
     useEffect(() => {
         const interval = setInterval(() => setDate(new Date()), 1000);

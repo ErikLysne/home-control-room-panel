@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const Container = styled.div`
     width: 100%;
     height: 50px;
 `;
@@ -22,19 +22,21 @@ const Select = styled.select`
 `;
 
 function RoomSelector(props) {
+    const { target, rooms } = props;
+
     const handleChangeEvent = (event) => {
         props.onChange(event.target.value);
     };
 
     return (
-        <Wrapper>
+        <Container>
             <Label>Target room: </Label>
-            <Select onChange={handleChangeEvent} value={props.target}>
-                {props.rooms.map((room) => (
+            <Select onChange={handleChangeEvent} value={target}>
+                {rooms.map((room) => (
                     <option key={room.id}>{room.name}</option>
                 ))}
             </Select>
-        </Wrapper>
+        </Container>
     );
 }
 

@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Grid from "./Grid";
-import GridCell from "./GridCell";
+import Grid from "../Grid";
+import GridCell from "../GridCell";
 import RoomSelector from "./RoomSelector";
-import { configActions } from "../ducks/config";
+import { configActions } from "../../../ducks/config";
 
 function SettingsPanel() {
     const config = useSelector((state) => state.config);
@@ -12,7 +12,7 @@ function SettingsPanel() {
 
     return (
         <Grid>
-            <GridCell rowStart={1} rowEnd={2} columnStart={1} columnEnd={3}>
+            <GridCell row={{ start: 1, end: 2 }} column={{ start: 1, end: 3 }}>
                 <RoomSelector
                     rooms={availableRooms}
                     target={targetRoom}
@@ -22,10 +22,8 @@ function SettingsPanel() {
                 />
             </GridCell>
             <GridCell
-                rowStart={2}
-                rowEnd={3}
-                columnStart={1}
-                columnEnd={3}
+                row={{ start: 2, end: 3 }}
+                column={{ start: 1, end: 3 }}
             ></GridCell>
         </Grid>
     );

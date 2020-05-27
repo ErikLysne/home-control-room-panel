@@ -2,43 +2,10 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const Button = styled.button`
-    width: ${(props) =>
-        props.size === "large"
-            ? 192
-            : props.size === "medium"
-            ? 101
-            : props.size === "small"
-            ? 101
-            : 0}px;
-    height: ${(props) =>
-        props.size === "large"
-            ? 101
-            : props.size === "medium"
-            ? 101
-            : props.size === "small"
-            ? 52
-            : 0}px;
     margin: auto 5px;
-    ${(props) =>
-        props.size === "large"
-            ? "display: flex; justify-content: center; align-items: center;"
-            : props.size === "medium"
-            ? ""
-            : props.size === "small"
-            ? "display: flex; justify-content: center; align-items: center;"
-            : ""}
     border-style: none;
-    background: url("${(props) =>
-        props.size === "large"
-            ? "/images/LargeButton.png"
-            : props.size === "medium"
-            ? "/images/MediumButton.png"
-            : props.size === "small"
-            ? "/images/SmallButton.png"
-            : ""}");
     color: rgb(200, 220, 230);
-
-    animation-name: ${(props) => (props.toggled ? buttonToggledKeyframes : "")};
+    animation: ${(props) => (props.toggled ? buttonToggledKeyframes : "")};
     animation-duration: 0.5s;
     animation-direction: alternate;
     animation-iteration-count: infinite;
@@ -54,7 +21,38 @@ const buttonToggledKeyframes = keyframes`
     }
 `;
 
-const LargeLabel = styled.div`
+const LargeButton = styled(Button)`
+    width: 192px;
+    height: 101px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/images/LargeButton.png");
+`;
+
+const MediumButton = styled(Button)`
+    width: 101px;
+    height: 101px;
+    background: url("/images/MediumButton.png");
+`;
+
+const SmallButton = styled(Button)`
+    width: 101px;
+    height: 52px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("/images/SmallButton.png");
+`;
+
+const opacity = (toggled) => (toggled ? 1 : 0.5);
+
+const Label = styled.div`
+    opacity: ${(props) =>
+        props.disabledWhenUntoggled ? opacity(props.toggled) : 1};
+`;
+
+const LargeLabel = styled(Label)`
     width: 50%;
     height: 100%;
     float: left;
@@ -62,122 +60,122 @@ const LargeLabel = styled.div`
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    opacity: ${(props) =>
-        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
-const MediumLabel = styled.div`
-    opacity: ${(props) =>
-        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
-`;
+const MediumLabel = styled(Label)``;
 
-const SmallLabel = styled.div`
+const SmallLabel = styled(Label)`
     width: 50%;
     height: 100%;
     float: right;
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: ${(props) =>
-        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
 `;
 
-const Logo = styled.div`
-    width: ${(props) =>
-        props.size === "large"
-            ? 50
-            : props.size === "medium"
-            ? 50
-            : props.size === "small"
-            ? 28
-            : 0}px;
-    height: ${(props) =>
-        props.size === "large"
-            ? 50
-            : props.size === "medium"
-            ? 50
-            : props.size === "small"
-            ? 28
-            : 0}px;
+const Icon = styled.div`
     padding: 20px 0 5px;
-    ${(props) =>
-        props.size === "large"
-            ? "float: right;"
-            : props.size === "medium"
-            ? ""
-            : props.size === "small"
-            ? "float: left;"
-            : ""};
-    margin: auto auto;
-    background-image: url(${(props) =>
-        props.toggled ? props.iconOn : props.iconOff});
+    margin: auto;
+    background-image: ${(props) =>
+        `url(${
+            props.togglable
+                ? props.toggled
+                    ? props.icon.enabled
+                    : props.icon.disabled
+                : props.icon.default
+        })`};
     background-repeat: no-repeat;
     background-position: center;
     opacity: ${(props) =>
-        props.disableWhenUntoggled ? (props.toggled ? 1 : 0.5) : 1};
+        props.disabledWhenUntoggled ? opacity(props.toggled) : 1};
+`;
+
+const LargeIcon = styled(Icon)`
+    width: 50px;
+    height: 50px;
+    float: right;
+`;
+
+const MediumIcon = styled(Icon)`
+    width: 50px;
+    height: 50px;
+`;
+
+const SmallIcon = styled(Icon)`
+    width: 28px;
+    height: 28px;
+    float: left;
 `;
 
 function ToggleButton(props) {
-    let labelOn;
-    let labelOff;
-    let iconOn;
-    let iconOff;
+    const {
+        toggled,
+        label,
+        icon,
+        size,
+        onClick,
+        togglable,
+        disabledWhenUntoggled
+    } = props;
 
-    if (!props.disableWhenUntoggled) {
-        labelOn = props.label;
-        labelOff = props.label;
-        iconOn = props.icon;
-        iconOff = props.icon;
-    } else {
-        labelOn = props.labelOn;
-        labelOff = props.labelOff;
-        iconOn = props.iconOn;
-        iconOff = props.iconOff;
-    }
-
-    const handleClickEvent = (event) => {
-        props.onClick(!props.state);
+    const handleClickEvent = () => {
+        onClick(!toggled);
     };
 
+    const buttonProps = {
+        toggled: toggled,
+        onClick: handleClickEvent
+    };
+
+    const iconProps = {
+        disabledWhenUntoggled: disabledWhenUntoggled,
+        togglable: togglable,
+        toggled: toggled,
+        icon: icon
+    };
+
+    const labelProps = {
+        disabledWhenUntoggled: disabledWhenUntoggled,
+        toggled: toggled
+    };
+
+    let ButtonComponent, IconComponent, LabelComponent;
+    switch (size) {
+        case "large":
+            ButtonComponent = LargeButton;
+            IconComponent = LargeIcon;
+            LabelComponent = LargeLabel;
+            break;
+        case "medium":
+            ButtonComponent = MediumButton;
+            IconComponent = MediumIcon;
+            LabelComponent = MediumLabel;
+            break;
+        case "small":
+            ButtonComponent = SmallButton;
+            IconComponent = SmallIcon;
+            LabelComponent = SmallLabel;
+            break;
+        default:
+            ButtonComponent = MediumButton;
+            IconComponent = MediumIcon;
+            LabelComponent = MediumLabel;
+            break;
+    }
+
     return (
-        <Button
-            size={props.size}
-            toggled={props.state}
-            onClick={handleClickEvent}
-            disableWhenUntoggled={props.disableWhenUntoggled}
-        >
-            {props.size === "large" && (
-                <LargeLabel
-                    toggled={props.state}
-                    disableWhenUntoggled={props.disableWhenUntoggled}
-                >
-                    {props.state ? labelOn : labelOff}
-                </LargeLabel>
-            )}
-            <Logo
-                size={props.size}
-                toggled={props.state}
-                iconOn={iconOn}
-                iconOff={iconOff}
-                disableWhenUntoggled={props.disableWhenUntoggled}
-            />
-            {props.size === "medium" && (
-                <MediumLabel
-                    toggled={props.state}
-                    disableWhenUntoggled={props.disableWhenUntoggled}
-                >
-                    {props.state ? labelOn : labelOff}
-                </MediumLabel>
-            )}
-            {props.size === "small" && (
-                <SmallLabel
-                    toggled={props.state}
-                    disableWhenUntoggled={props.disableWhenUntoggled}
-                >
-                    {props.state ? labelOn : labelOff}
-                </SmallLabel>
-            )}
-        </Button>
+        <>
+            <ButtonComponent {...buttonProps}>
+                <IconComponent {...iconProps} />
+                <LabelComponent {...labelProps}>
+                    {togglable
+                        ? toggled
+                            ? label.enabled
+                            : label.disabled
+                        : label.default}
+                </LabelComponent>
+            </ButtonComponent>
+        </>
     );
 }
 
