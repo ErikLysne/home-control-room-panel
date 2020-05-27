@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Grid from "./Grid";
-import GridCell from "./GridCell";
-import NetworkInfo from "./NetworkInfo";
-import NetworkConnectivityIndicator from "./NetworkConnectivityIndicator";
-import { networkOperations } from "../ducks/network";
+import Grid from "../Grid";
+import GridCell from "../GridCell";
+import Info from "./Info";
+import ConnectivityIndicator from "./ConnectivityIndicator";
+import { networkOperations } from "../../../ducks/network";
 
 function NetworkPanel() {
     const network = useSelector((state) => state.network);
@@ -20,17 +20,15 @@ function NetworkPanel() {
 
     return (
         <Grid>
-            <GridCell rowStart={1} rowEnd={2} columnStart={1} columnEnd={2}>
-                <NetworkInfo network={network} config={config} />
+            <GridCell row={{ start: 1, end: 2 }} column={{ start: 1, end: 2 }}>
+                <Info network={network} config={config} />
             </GridCell>
             <GridCell
-                rowStart={2}
-                rowEnd={3}
-                columnStart={1}
-                columnEnd={2}
+                row={{ start: 2, end: 3 }}
+                column={{ start: 1, end: 2 }}
             ></GridCell>
-            <GridCell rowStart={1} rowEnd={3} columnStart={2} columnEnd={3}>
-                <NetworkConnectivityIndicator network={network} />
+            <GridCell row={{ start: 1, end: 3 }} column={{ start: 2, end: 3 }}>
+                <ConnectivityIndicator network={network} />
             </GridCell>
         </Grid>
     );

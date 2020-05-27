@@ -31,13 +31,15 @@ function MainMenu() {
                         )
                     )
                 }
-                state={activePanelIndexCurrent === 0}
-                disableWhenUntoggled={true}
-                labelOn="Light"
-                labelOff="Light"
-                iconOn="/images/icons/Lights.png"
-                iconOff="/images/icons/Lights.png"
+                toggled={activePanelIndexCurrent === 0}
                 size="medium"
+                disabledWhenUntoggled
+                label={{
+                    default: "Lights"
+                }}
+                icon={{
+                    default: "/images/icons/Lights.png"
+                }}
             />
             <ToggleButton
                 onClick={() =>
@@ -47,13 +49,15 @@ function MainMenu() {
                         )
                     )
                 }
-                state={activePanelIndexCurrent === 1}
-                disableWhenUntoggled={true}
-                labelOn="Network"
-                labelOff="Network"
-                iconOn="/images/icons/Network.png"
-                iconOff="/images/icons/Network.png"
+                toggled={activePanelIndexCurrent === 1}
                 size="medium"
+                disabledWhenUntoggled
+                label={{
+                    default: "Network"
+                }}
+                icon={{
+                    default: "/images/icons/Network.png"
+                }}
             />
             <ToggleButton
                 onClick={() =>
@@ -63,13 +67,15 @@ function MainMenu() {
                         )
                     )
                 }
-                state={activePanelIndexCurrent === 2}
-                disableWhenUntoggled={true}
-                labelOn="Sensors"
-                labelOff="Sensors"
-                iconOn="/images/icons/Sensors.png"
-                iconOff="/images/icons/Sensors.png"
+                toggled={activePanelIndexCurrent === 2}
                 size="medium"
+                disabledWhenUntoggled
+                label={{
+                    default: "Sensors"
+                }}
+                icon={{
+                    default: "/images/icons/Sensors.png"
+                }}
             />
             <ToggleButton
                 onClick={() =>
@@ -79,13 +85,15 @@ function MainMenu() {
                         )
                     )
                 }
-                state={activePanelIndexCurrent === 3}
-                disableWhenUntoggled={true}
-                labelOn="Settings"
-                labelOff="Settings"
-                iconOn="/images/icons/Settings.png"
-                iconOff="/images/icons/Settings.png"
+                toggled={activePanelIndexCurrent === 3}
                 size="medium"
+                disabledWhenUntoggled
+                label={{
+                    default: "Settings"
+                }}
+                icon={{
+                    default: "/images/icons/Settings.png"
+                }}
             />
         </Container>
     );

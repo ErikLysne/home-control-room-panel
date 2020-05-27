@@ -5,7 +5,7 @@ const Container = styled.div`
     width: 100%;
     height: 30px;
     padding-top: 30px;
-    opacity: ${(props) => (props.active ? 100 : 50)}%;
+    opacity: ${(props) => (props.isActive ? 100 : 50)}%;
 `;
 
 const LabelContainer = styled.div`
@@ -41,24 +41,25 @@ const Slider = styled.input`
 `;
 
 function LightSlider(props) {
+    const { property, value, isActive, backgroundImage } = props;
     const handleValueChangeEvent = (event) => {
         props.onChange(parseInt(event.target.value));
     };
 
     return (
-        <Container active={props.active}>
+        <Container isActive={isActive}>
             <LabelContainer>
-                <Label>{props.property}</Label>
-                <Label>{props.value}</Label>
+                <Label>{property}</Label>
+                <Label>{value}</Label>
             </LabelContainer>
             <Slider
                 onChange={handleValueChangeEvent}
                 type="range"
                 min="1"
                 max="100"
-                disabled={!props.active}
-                value={props.value}
-                backgroundImage={props.backgroundImage}
+                disabled={!isActive}
+                value={value}
+                backgroundImage={backgroundImage}
             />
         </Container>
     );

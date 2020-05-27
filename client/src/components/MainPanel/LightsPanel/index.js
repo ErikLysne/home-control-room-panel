@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ToggleButton from "./ToggleButton";
-import LightsInfo from "./LightsInfo";
-import Grid from "./Grid";
-import GridCell from "./GridCell";
-import { lightsActions, lightsOperations } from "../ducks/lights";
-import { configOperations } from "../ducks/config";
-import { windowsActions } from "../ducks/windows";
+import ToggleButton from "../../ToggleButton";
+import Info from "./Info";
+import Grid from "../Grid";
+import GridCell from "../GridCell";
+import { lightsActions, lightsOperations } from "../../../ducks/lights";
+import { configOperations } from "../../../ducks/config";
+import { windowsActions } from "../../../ducks/windows";
 
 function LightsPanel() {
     const lights = useSelector((state) => state.lights);
@@ -31,16 +31,14 @@ function LightsPanel() {
 
     return (
         <Grid>
-            <GridCell rowStart={1} rowEnd={2} columnStart={1} columnEnd={3}>
-                <Grid>
+            <GridCell row={{ start: 1, end: 2 }} column={{ start: 1, end: 2 }}>
+                <Grid rows={2} columns={1}>
                     <GridCell
-                        rowStart={1}
-                        rowEnd={2}
-                        columnStart={1}
-                        columnEnd={2}
+                        row={{ start: 1, end: 2 }}
+                        column={{ start: 1, end: 2 }}
                     >
                         <ToggleButton
-                            state={lights.local.on}
+                            toggled={lights.local.on}
                             onClick={(state) => {
                                 dispatch(lightsActions.localOnChanged(state));
                                 dispatch(
@@ -50,47 +48,46 @@ function LightsPanel() {
                                     })
                                 );
                             }}
-                            disableWhenUntoggled={true}
-                            labelOn="On"
-                            labelOff="Off"
-                            iconOn="/images/icons/On.png"
-                            iconOff="/images/icons/Off.png"
                             size="large"
+                            togglable
+                            disabledWhenUntoggled
+                            label={{
+                                enabled: "On",
+                                disabled: "Off"
+                            }}
+                            icon={{
+                                enabled: "/images/icons/On.png",
+                                disabled: "/images/icons/Off.png"
+                            }}
                         />
                     </GridCell>
                 </Grid>
             </GridCell>
-            <GridCell rowStart={1} rowEnd={2} columnStart={2} columnEnd={3}>
-                <LightsInfo info={lights.local.info} />
+            <GridCell row={{ start: 1, end: 2 }} column={{ start: 2, end: 3 }}>
+                <Info info={lights.local.info} />
             </GridCell>
-            <GridCell rowStart={2} rowEnd={3} columnStart={1} columnEnd={3}>
+            <GridCell row={{ start: 2, end: 3 }} column={{ start: 1, end: 3 }}>
                 <ToggleButton
-                    state={false}
                     onClick={() => {
                         dispatch(windowsActions.lightsSlidersWindowOpened());
                     }}
-                    disableWhenUntoggled={false}
-                    label={"Sliders"}
-                    icon="/images/icons/Sliders.png"
                     size={"medium"}
+                    label={{ default: "Sliders" }}
+                    icon={{ default: "/images/icons/Sliders.png" }}
                 />
                 <ToggleButton
-                    state={false}
                     onClick={() => {
                         dispatch(windowsActions.lightsKelvinWindowOpened());
                     }}
-                    disableWhenUntoggled={false}
-                    label={"Kelvin"}
-                    icon="/images/icons/Kelvin.png"
                     size={"medium"}
+                    label={{ default: "Kelvin" }}
+                    icon={{ default: "/images/icons/Kelvin.png" }}
                 />
                 <ToggleButton
-                    state={false}
                     onClick={() => {}}
-                    disableWhenUntoggled={false}
-                    label={"Scenes"}
-                    icon="/images/icons/Scenes.png"
                     size={"medium"}
+                    label={{ default: "Scenes" }}
+                    icon={{ default: "/images/icons/Scenes.png" }}
                 />
             </GridCell>
         </Grid>

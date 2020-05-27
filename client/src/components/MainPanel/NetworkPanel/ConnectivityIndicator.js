@@ -29,7 +29,10 @@ const NetworkStatusIcon = styled.div`
     background-position: center;
 `;
 
-function NetworkConnectivityIndicator(props) {
+function ConnectivityIndicator(props) {
+    const { network } = props;
+    const { pending, serverOnline, bridgeOnline } = network;
+
     /*
         networkInfo.loading converted to integer before passing as prop due to issue with styled components
         https://github.com/styled-components/styled-components/issues/1198
@@ -40,15 +43,15 @@ function NetworkConnectivityIndicator(props) {
             <Icon icon={"/images/icons/Device.png"} />
             <Icon icon={"/images/icons/ConnectivityIndicator.png"}>
                 <NetworkStatusIcon
-                    pending={props.network.pending ? 1 : 0}
-                    online={props.network.serverOnline}
+                    pending={pending ? 1 : 0}
+                    online={serverOnline}
                 />
             </Icon>
             <Icon icon={"/images/icons/Server.png"} />
             <Icon icon={"/images/icons/ConnectivityIndicator.png"}>
                 <NetworkStatusIcon
-                    pending={props.network.pending ? 1 : 0}
-                    online={props.network.bridgeOnline}
+                    pending={pending ? 1 : 0}
+                    online={bridgeOnline}
                 />
             </Icon>
             <Icon icon={"/images/icons/HueBridge.png"} />
@@ -56,4 +59,4 @@ function NetworkConnectivityIndicator(props) {
     );
 }
 
-export default NetworkConnectivityIndicator;
+export default ConnectivityIndicator;

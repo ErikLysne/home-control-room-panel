@@ -9,8 +9,7 @@ import rootReducer from "./util/rootReducer";
 
 // Components
 import Background from "./components/Background";
-import InfoBar from "./components/InfoBar";
-import LogoBar from "./components/LogoBar";
+import Header from "./components/Header";
 import MainMenu from "./components/MainMenu";
 import MainPanel from "./components/MainPanel";
 import WindowContainer from "./components/WindowContainer";
@@ -31,8 +30,7 @@ function App() {
         <Provider store={store}>
             <Container>
                 <Background />
-                <InfoBar />
-                <LogoBar />
+                <Header />
                 <MainMenu />
                 <MainPanel />
                 <WindowContainer />

@@ -2,8 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
 import Window from "./Window";
-import { windowsActions } from "../ducks/windows";
-import { lightsActions, lightsOperations } from "../ducks/lights";
+import { windowsActions } from "../../ducks/windows";
+import { lightsActions, lightsOperations } from "../../ducks/lights";
 
 const Container = styled.div`
     width: 100%;
@@ -61,29 +61,29 @@ const LabelContainer = styled.div`
     align-items: center;
 `;
 
+const kelvinToRaw = (kelvin) => {
+    const slope = (153.0 - 500.0) / (6500.0 - 2000.0);
+    return Math.round(slope * kelvin + 500.0 - 2000.0 * slope);
+};
+
+const rawToKelvin = (raw) => {
+    const slope = (2000.0 - 6500.0) / (500.0 - 153.0);
+    return Math.round(slope * raw + 2000.0 - 500.0 * slope);
+};
+
+const rawToSliderValue = (raw) => {
+    const slope = (100.0 - 1.0) / (153.0 - 500.0);
+    return Math.round(slope * raw + 1.0 - 500.0 * slope);
+};
+
+const sliderValueToRaw = (value) => {
+    const slope = (153.0 - 500.0) / (100.0 - 1.0);
+    return Math.round(slope * value + 500.0 - slope);
+};
+
 function LightKelvinWindow() {
     const lights = useSelector((state) => state.lights);
     const dispatch = useDispatch();
-
-    const kelvinToRaw = (kelvin) => {
-        const slope = (153.0 - 500.0) / (6500.0 - 2000.0);
-        return Math.round(slope * kelvin + 500.0 - 2000.0 * slope);
-    };
-
-    const rawToKelvin = (raw) => {
-        const slope = (2000.0 - 6500.0) / (500.0 - 153.0);
-        return Math.round(slope * raw + 2000.0 - 500.0 * slope);
-    };
-
-    const rawToSliderValue = (raw) => {
-        const slope = (100.0 - 1.0) / (153.0 - 500.0);
-        return Math.round(slope * raw + 1.0 - 500.0 * slope);
-    };
-
-    const sliderValueToRaw = (value) => {
-        const slope = (153.0 - 500.0) / (100.0 - 1.0);
-        return Math.round(slope * value + 500.0 - slope);
-    };
 
     const handleValueChangeEvent = (event) => {
         const sliderValue = parseInt(event.target.value);

@@ -5,10 +5,10 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     position: relative;
-    grid-column-start: ${(props) => props.columnStart};
-    grid-column-end: ${(props) => props.columnEnd};
-    grid-row-start: ${(props) => props.rowStart};
-    grid-row-end: ${(props) => props.rowEnd};
+    grid-column-start: ${(props) => props.column.start};
+    grid-column-end: ${(props) => props.column.end};
+    grid-row-start: ${(props) => props.row.start};
+    grid-row-end: ${(props) => props.row.end};
     border-style: solid;
     border-width: 1px;
     border-color: rgba(211, 226, 252, 0.5);
@@ -31,14 +31,10 @@ const Container = styled.div`
 `;
 
 function GridCell(props) {
+    const { row, column, children } = props;
     return (
-        <Container
-            columnStart={props.columnStart}
-            columnEnd={props.columnEnd}
-            rowStart={props.rowStart}
-            rowEnd={props.rowEnd}
-        >
-            {props.children}
+        <Container row={row} column={column}>
+            {children}
         </Container>
     );
 }
