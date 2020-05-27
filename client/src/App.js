@@ -5,16 +5,15 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import styled from "styled-components";
-import rootReducer from "./reducers";
+import rootReducer from "./util/rootReducer";
 
 // Components
-import Background from "./components/background/Background";
-import InfoBar from "./components/info-bar/InfoBar";
-import LogoBar from "./components/logo-bar/LogoBar";
-import MainMenu from "./components/main-menu/MainMenu";
-import MainPanel from "./components/main-panel/MainPanel";
-
-import WindowContainer from "./components/window-container/WindowContainer";
+import Background from "./components/Background";
+import InfoBar from "./components/InfoBar";
+import LogoBar from "./components/LogoBar";
+import MainMenu from "./components/MainMenu";
+import MainPanel from "./components/MainPanel";
+import WindowContainer from "./components/WindowContainer";
 
 const store = createStore(
     rootReducer,

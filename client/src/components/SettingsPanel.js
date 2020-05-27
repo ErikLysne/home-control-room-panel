@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Grid from "../grid/Grid";
-import GridCell from "../grid-cell/GridCell";
-import RoomSelector from "../room-selector/RoomSelector";
-import { configActions } from "../../ducks/config";
+import Grid from "./Grid";
+import GridCell from "./GridCell";
+import RoomSelector from "./RoomSelector";
+import { configActions } from "../ducks/config";
 
 function SettingsPanel() {
     const config = useSelector((state) => state.config);

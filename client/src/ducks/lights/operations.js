@@ -2,7 +2,8 @@ import * as actions from "./actions";
 import axios from "axios";
 
 const dispatchSuccessfulResult = (dispatch, result) => {
-    const { on, hue, bri, sat, colormode } = result.data.action;
+    console.log(result.data);
+    const { on, hue, bri, sat, colormode, ct } = result.data.action;
     const { all_on, any_on } = result.data.state;
     const { id, name, lights } = result.data;
 
@@ -12,7 +13,8 @@ const dispatchSuccessfulResult = (dispatch, result) => {
             on: on,
             hue: hue,
             saturation: sat,
-            brightness: bri
+            brightness: bri,
+            colorTemp: ct
         })
     );
     dispatch(
@@ -46,7 +48,8 @@ export const setLightsRequested = (lights) => {
                     on: lights.on,
                     hue: lights.hue,
                     sat: lights.saturation,
-                    bri: lights.brightness
+                    bri: lights.brightness,
+                    ct: lights.colorTemp
                 }
             )
             .then((result) => {

@@ -1,17 +1,17 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import Window from "../window/Window";
-import LightSlider from "../light-slider/LightSlider";
-import { lightSlidersWindowClosed } from "../../actions/windowsActions";
-import { lightsActions, lightsOperations } from "../../ducks/lights";
+import Window from "./Window";
+import LightSlider from "./LightSlider";
+import { windowsActions } from "../ducks/windows";
+import { lightsActions, lightsOperations } from "../ducks/lights";
 
 const SliderContainer = styled.div`
     width: 300px;
     margin: 30px auto;
 `;
 
-function LightSlidersWindow(props) {
+function LightSlidersWindow() {
     const lights = useSelector((state) => state.lights);
     const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ function LightSlidersWindow(props) {
     return (
         <Window
             title={"Light Sliders"}
-            onClose={() => dispatch(lightSlidersWindowClosed())}
+            onClose={() => dispatch(windowsActions.lightsSlidersWindowClosed())}
         >
             <SliderContainer>
                 <LightSlider

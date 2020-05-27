@@ -1,17 +1,5 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import styled, { keyframes } from "styled-components";
-import { menuActions } from "../../ducks/menu";
-
-const Container = styled.div`
-    width: ${(props) => props.width}vw;
-    height: ${(props) => props.height}vh;
-    position: absolute;
-    top: 220px;
-    left: 0;
-    overflow: hidden;
-    perspective: 2000px;
-`;
 
 const Panel = styled.div`
     width: ${(props) => props.width}vw;
@@ -19,7 +7,7 @@ const Panel = styled.div`
     position: absolute;
     left: 2.5vw;
     top: 15px;
-    background-color: rgb(5, 17, 25);
+    background-color: rgba(5, 17, 25, 0.75);
     box-shadow: 0px 0px 5px 2px rgba(211, 226, 252, 0.75);
     transform-style: preserve-3d;
     z-index: ${(props) =>
@@ -27,7 +15,7 @@ const Panel = styled.div`
     opacity: ${(props) =>
         zIndex(props.index, props.activeIndexCurrent, props.numberOfPanels) ===
         0
-            ? 0.8
+            ? 1
             : 0};
     animation: ${(props) => {
             return props.animate
@@ -143,98 +131,8 @@ const zIndex = (index, activePanelIndex, numberOfPanels) => {
         : -Math.ceil(unwrapAngle / interiorAngle(numberOfPanels));
 };
 
-const RotationClickableArea = styled.div`
-    width: 10%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    background-color: transparent;
-`;
-
-const RotateRightButton = styled(RotationClickableArea)`
-    right: 0;
-`;
-
-const RotateLeftButton = styled(RotationClickableArea)`
-    left: 0;
-`;
-
-function Carousel(props) {
-    const {
-        activePanelIndexCurrent,
-        activePanelIndexPrevious,
-        isTransitioning
-    } = useSelector((state) => state.menu);
-    const dispatch = useDispatch();
-
-    const numberOfPanels = props.children.length;
-
-    const rotateRight = () => {
-        if (isTransitioning) return;
-
-        dispatch(
-            menuActions.activePanelIndexChanged(
-                activePanelIndexCurrent >= numberOfPanels - 1
-                    ? 0
-                    : activePanelIndexCurrent + 1,
-                activePanelIndexCurrent
-            )
-        );
-    };
-
-    const rotateLeft = () => {
-        if (isTransitioning) return;
-
-        dispatch(
-            menuActions.activePanelIndexChanged(
-                activePanelIndexCurrent === 0
-                    ? numberOfPanels - 1
-                    : activePanelIndexCurrent - 1,
-                activePanelIndexCurrent
-            )
-        );
-    };
-
-    useEffect(() => {
-        if (isTransitioning) {
-            setTimeout(() => {
-                dispatch(menuActions.transitionFinished());
-            }, props.transitionDuration);
-        }
-    }, [dispatch, isTransitioning, props.transitionDuration]);
-
-    let index = 0;
-    return (
-        <Container width={props.containerWidth} height={props.containerHeight}>
-            {React.Children.map(props.children, (child) => (
-                <Panel
-                    key={index}
-                    width={props.panelWidth}
-                    height={props.panelHeight}
-                    index={index++}
-                    activeIndexCurrent={activePanelIndexCurrent}
-                    activeIndexPrevious={activePanelIndexPrevious}
-                    animate={isTransitioning}
-                    numberOfPanels={numberOfPanels}
-                    panelOffset={props.panelOffset}
-                    transitionDuration={props.transitionDuration}
-                >
-                    {child}
-                    <RotateRightButton onClick={rotateRight} />
-                    <RotateLeftButton onClick={rotateLeft} />
-                </Panel>
-            ))}
-        </Container>
-    );
+function CarouselPanel(props) {
+    return <Panel {...props}>{props.children}</Panel>;
 }
 
-Carousel.defaultProps = {
-    containerWidth: 100,
-    containerHeight: 80,
-    panelWidth: 90,
-    panelHeight: 60,
-    panelOffset: 1,
-    transitionDuration: 1000
-};
-
-export default Carousel;
+export default CarouselPanel;

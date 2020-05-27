@@ -28,13 +28,21 @@ export const localBrightnessChanged = (value) => ({
     }
 });
 
+export const localColorTempChanged = (value) => ({
+    type: types.COLOR_TEMP_CHANGED,
+    payload: {
+        colorTemp: value
+    }
+});
+
 export const localStateUpdated = (info) => ({
     type: types.STATE_UPDATED,
     payload: {
         on: info.on,
         hue: info.hue,
         saturation: info.saturation,
-        brightness: info.brightness
+        brightness: info.brightness,
+        colorTemp: info.colorTemp
     }
 });
 

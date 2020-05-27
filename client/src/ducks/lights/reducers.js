@@ -5,7 +5,8 @@ const initialState = {
         on: false,
         hue: 0,
         saturation: 0,
-        brightness: 1,
+        brightness: 0,
+        colorTemp: 0,
         info: {
             id: 0,
             name: "",
@@ -41,11 +42,15 @@ const lights = (state = initialState, action) => {
         case types.BRIGHTNESS_CHANGED:
             local.brightness = payload.brightness;
             break;
+        case types.COLOR_TEMP_CHANGED:
+            local.colorTemp = payload.colorTemp;
+            break;
         case types.STATE_UPDATED:
             local.on = payload.on;
             local.hue = payload.hue;
             local.saturation = payload.saturation;
             local.brightness = payload.brightness;
+            local.colorTemp = payload.colorTemp;
             break;
         case types.INFO_UPDATED:
             info.id = payload.id;

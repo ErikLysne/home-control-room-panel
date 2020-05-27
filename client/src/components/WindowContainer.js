@@ -1,7 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import LightSlidersWindow from "../light-sliders-window/LightSlidersWindow";
+import LightSlidersWindow from "./LightSlidersWindow";
+import LightKelvinWindow from "./LightKelvinWindow";
 
 const Container = styled.div``;
 
@@ -10,7 +11,8 @@ function WindowContainer() {
 
     return (
         <Container>
-            {windows.lightSlidersWindowOpen && <LightSlidersWindow />}
+            {windows.lights.slidersWindowOpen && <LightSlidersWindow />}
+            {windows.lights.kelvinWindowOpen && <LightKelvinWindow />}
         </Container>
     );
 }

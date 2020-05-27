@@ -5,7 +5,7 @@ export const getNetworkDetailsRequested = () => {
     return (dispatch, getState) => {
         const state = getState();
 
-        const { serverIpAddress, serverPort, targetRoom } = state.config.local;
+        const { serverIpAddress, serverPort } = state.config.local;
 
         dispatch(actions.requestSent());
         const startTime = new Date();
@@ -28,7 +28,7 @@ export const getNetworkDetailsRequested = () => {
                 }
             })
             .catch((error) => {
-                dispatch(actions.requestFailed({ error: error }));
+                dispatch(actions.requestFailed(error.message));
             });
     };
 };

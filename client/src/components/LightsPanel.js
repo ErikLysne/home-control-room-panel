@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import ToggleButton from "../toggle-button/ToggleButton";
-import LightsInfo from "../lights-info/LightsInfo";
-import Grid from "../grid/Grid";
-import GridCell from "../grid-cell/GridCell";
-import { lightsActions, lightsOperations } from "../../ducks/lights";
-import { configOperations } from "../../ducks/config";
-import { lightSlidersWindowOpened } from "../../actions/windowsActions";
+import ToggleButton from "./ToggleButton";
+import LightsInfo from "./LightsInfo";
+import Grid from "./Grid";
+import GridCell from "./GridCell";
+import { lightsActions, lightsOperations } from "../ducks/lights";
+import { configOperations } from "../ducks/config";
+import { windowsActions } from "../ducks/windows";
 
 function LightsPanel() {
     const lights = useSelector((state) => state.lights);
     const config = useSelector((state) => state.config);
+    const menu = useSelector((state) => state.menu);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -20,10 +21,13 @@ function LightsPanel() {
     }, [dispatch]);
 
     useEffect(() => {
-        if (config.local.targetRoom !== "") {
+        if (
+            config.local.targetRoom !== "" &&
+            menu.activePanelIndexCurrent === 0
+        ) {
             dispatch(lightsOperations.getLightsRequested());
         }
-    }, [config.local.targetRoom]);
+    }, [config.local.targetRoom, menu.activePanelIndexCurrent]);
 
     return (
         <Grid>
@@ -63,7 +67,7 @@ function LightsPanel() {
                 <ToggleButton
                     state={false}
                     onClick={() => {
-                        dispatch(lightSlidersWindowOpened());
+                        dispatch(windowsActions.lightsSlidersWindowOpened());
                     }}
                     disableWhenUntoggled={false}
                     label={"Sliders"}
@@ -72,7 +76,9 @@ function LightsPanel() {
                 />
                 <ToggleButton
                     state={false}
-                    onClick={() => {}}
+                    onClick={() => {
+                        dispatch(windowsActions.lightsKelvinWindowOpened());
+                    }}
                     disableWhenUntoggled={false}
                     label={"Kelvin"}
                     icon="/images/icons/Kelvin.png"

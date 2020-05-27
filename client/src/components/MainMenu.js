@@ -1,20 +1,19 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import styled from "styled-components";
-import ToggleButton from "../toggle-button/ToggleButton";
-import { menuActions } from "../../ducks/menu";
+import ToggleButton from "./ToggleButton";
+import { menuActions } from "../ducks/menu";
 
 const Container = styled.div`
     width: 90vw;
     height: 120px;
     position: absolute;
-    top: 80px;
+    bottom: 20px;
     left: 2.5vw;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(5, 17, 25);
-    opacity: 0.8;
+    background-color: rgba(5, 17, 25, 0.75);
     box-shadow: 0px 0px 5px 2px rgba(211, 226, 252, 0.75);
 `;
 

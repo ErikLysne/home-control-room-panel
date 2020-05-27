@@ -5,7 +5,9 @@ export const ON_CHANGED = local + "ON_CHANGED";
 export const HUE_CHANGED = local + "HUE_CHANGED";
 export const SATURATION_CHANGED = local + "SATURATION_CHANGED";
 export const BRIGHTNESS_CHANGED = local + "BRIGHTNESS_CHANGED";
+export const COLOR_TEMP_CHANGED = local + "COLOR_TEMP_CHANGED";
 export const STATE_UPDATED = local + "STATE_UPDATED";
+
 const info = local + "info/";
 export const INFO_UPDATED = info + "INFO_UPDATED";
 
