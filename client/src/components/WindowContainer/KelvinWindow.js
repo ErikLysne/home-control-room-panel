@@ -101,7 +101,7 @@ function LightKelvinWindow() {
     return (
         <Window
             height={250}
-            title={"Color Temperature - Kelvin"}
+            title={"Kelvin"}
             onClose={() => dispatch(windowsActions.lightsKelvinWindowClosed())}
         >
             <Container>

@@ -1,15 +1,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import LightSlidersWindow from "./LightSliderWindow";
-import LightKelvinWindow from "./LightKelvinWindow";
+import SlidersWindow from "./SlidersWindow";
+import KelvinWindow from "./KelvinWindow";
+import FunctionsWindow from "./FunctionsWindow";
 
 function WindowContainer() {
     const windows = useSelector((state) => state.windows);
 
     return (
         <>
-            {windows.lights.slidersWindowOpen && <LightSlidersWindow />}
-            {windows.lights.kelvinWindowOpen && <LightKelvinWindow />}
+            {windows.lights.slidersWindowOpen && <SlidersWindow />}
+            {windows.lights.kelvinWindowOpen && <KelvinWindow />}
+            {windows.lights.functionsWindowOpen && <FunctionsWindow />}
         </>
     );
 }

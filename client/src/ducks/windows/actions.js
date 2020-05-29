@@ -15,3 +15,11 @@ export const lightsKelvinWindowOpened = () => ({
 export const lightsKelvinWindowClosed = () => ({
     type: types.KELVIN_WINDOW_CLOSED
 });
+
+export const lightsFunctionsWindowOpened = () => ({
+    type: types.FUNCTIONS_WINDOW_OPENED
+});
+
+export const lightsFunctionsWindowClosed = () => ({
+    type: types.FUNCTIONS_WINDOW_CLOSED
+});

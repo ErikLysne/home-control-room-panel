@@ -59,7 +59,7 @@ router.route("/lights/groups").get((req, res) => {
 router
     .route("/lights/groups/:groupName")
     .get((req, res) => {
-        const groupName = req.params.groupName;
+        const { groupName } = req.params;
         if (isValidGroupName(groupName)) {
             hue.getGroupState(groupName)
                 .then((groupState) => {
@@ -76,7 +76,7 @@ router
         }
     })
     .put((req, res) => {
-        const groupName = req.params.groupName;
+        const { groupName } = req.params;
         if (isValidGroupName(groupName)) {
             const newState = {};
             ({
@@ -107,5 +107,97 @@ router
             sendHueInvalidGroupNameErrorResponse(groupName, res);
         }
     });
+
+router.route("/lights/functions/:functionName").put(async (req, res) => {
+    const welcomeHomeSequence = [
+        {
+            groupName: "Hallway",
+            duration: 1000,
+            state: {
+                on: true
+            }
+        },
+        {
+            groupName: "Bedroom",
+            duration: 0,
+            state: {
+                on: true
+            }
+        },
+        {
+            groupName: "Bathroom",
+            duration: 1000,
+            state: {
+                on: true
+            }
+        },
+        {
+            groupName: "Living Room",
+            duration: 1000,
+            state: {
+                on: true
+            }
+        }
+    ];
+
+    const goodByeSequence = [
+        {
+            groupName: "Living Room",
+            duration: 1000,
+            state: {
+                on: false
+            }
+        },
+        {
+            groupName: "Bathroom",
+            duration: 0,
+            state: {
+                on: false
+            }
+        },
+        {
+            groupName: "Bedroom",
+            duration: 1000,
+            state: {
+                on: false
+            }
+        },
+        {
+            groupName: "Hallway",
+            duration: 1000,
+            state: {
+                on: false
+            }
+        }
+    ];
+
+    const { functionName } = req.params;
+    let sequence;
+    switch (functionName) {
+        case "welcome_home":
+            sequence = welcomeHomeSequence;
+            break;
+        case "good_bye":
+            sequence = goodByeSequence;
+            break;
+        default:
+            sequence = undefined;
+            break;
+    }
+
+    try {
+        await new Promise((resolve) => setTimeout(resolve, 10000));
+        sequence.forEach(async (sequenceStep) => {
+            const group = getGroup(sequenceStep.groupName);
+            await hue.setGroupState(group.id, sequenceStep.state);
+            await new Promise((resolve) =>
+                setTimeout(resolve, sequenceStep.duration)
+            );
+        });
+        res.send(true);
+    } catch (error) {
+        res.send(false);
+    }
+});
 
 export default router;

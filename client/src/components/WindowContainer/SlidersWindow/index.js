@@ -11,17 +11,17 @@ const SliderContainer = styled.div`
     margin: 30px auto;
 `;
 
-const hueToRaw = (hue) => Math.round((hue * 65535.0) / 100.0);
+const hueToRaw = (hue) => Math.round((hue * 65535.0) / 360.0);
 const brightnessToRaw = (brightness) =>
     Math.round(1 + (brightness * 253.0) / 100.0);
 const saturationToRaw = (saturation) =>
     Math.round((saturation * 254.0) / 100.0);
 
-const rawToHue = (raw) => Math.round((raw * 100.0) / 65535.0);
+const rawToHue = (raw) => Math.round((raw * 360.0) / 65535.0);
 const rawToBrightness = (raw) => Math.round(((raw - 1) * 100.0) / 253.0);
 const rawToSaturation = (raw) => Math.round((raw * 100.0) / 254.0);
 
-function LightSlidersWindow() {
+function SlidersWindow() {
     const lights = useSelector((state) => state.lights);
     const dispatch = useDispatch();
 
@@ -35,6 +35,11 @@ function LightSlidersWindow() {
                     property={"Hue"}
                     backgroundImage={"/images/HueSlider.png"}
                     value={rawToHue(lights.local.hue)}
+                    range={{
+                        min: 0,
+                        max: 360,
+                        unit: "°"
+                    }}
                     onChange={(value) => {
                         const raw = hueToRaw(value);
                         dispatch(lightsActions.localHueChanged(raw));
@@ -51,6 +56,11 @@ function LightSlidersWindow() {
                     property={"Saturation"}
                     backgroundImage={"/images/SaturationSlider.png"}
                     value={rawToSaturation(lights.local.saturation)}
+                    range={{
+                        min: 0,
+                        max: 100,
+                        unit: "%"
+                    }}
                     onChange={(value) => {
                         const raw = saturationToRaw(value);
                         dispatch(lightsActions.localSaturationChanged(raw));
@@ -67,6 +77,11 @@ function LightSlidersWindow() {
                     property={"Brightness"}
                     backgroundImage={"/images/BrightnessSlider.png"}
                     value={rawToBrightness(lights.local.brightness)}
+                    range={{
+                        min: 1,
+                        max: 100,
+                        unit: "%"
+                    }}
                     onChange={(value) => {
                         const raw = brightnessToRaw(value);
                         dispatch(lightsActions.localBrightnessChanged(raw));
@@ -84,4 +99,4 @@ function LightSlidersWindow() {
     );
 }
 
-export default LightSlidersWindow;
+export default SlidersWindow;

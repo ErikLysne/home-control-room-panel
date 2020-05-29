@@ -32,36 +32,29 @@ function LightsPanel() {
     return (
         <Grid>
             <GridCell row={{ start: 1, end: 2 }} column={{ start: 1, end: 2 }}>
-                <Grid rows={2} columns={1}>
-                    <GridCell
-                        row={{ start: 1, end: 2 }}
-                        column={{ start: 1, end: 2 }}
-                    >
-                        <ToggleButton
-                            toggled={lights.local.on}
-                            onClick={(state) => {
-                                dispatch(lightsActions.localOnChanged(state));
-                                dispatch(
-                                    lightsOperations.setLightsRequested({
-                                        ...lights.local,
-                                        on: state
-                                    })
-                                );
-                            }}
-                            size="large"
-                            togglable
-                            disabledWhenUntoggled
-                            label={{
-                                enabled: "On",
-                                disabled: "Off"
-                            }}
-                            icon={{
-                                enabled: "/images/icons/On.png",
-                                disabled: "/images/icons/Off.png"
-                            }}
-                        />
-                    </GridCell>
-                </Grid>
+                <ToggleButton
+                    toggled={lights.local.on}
+                    onClick={(state) => {
+                        dispatch(lightsActions.localOnChanged(state));
+                        dispatch(
+                            lightsOperations.setLightsRequested({
+                                ...lights.local,
+                                on: state
+                            })
+                        );
+                    }}
+                    size="large"
+                    togglable
+                    disabledWhenUntoggled
+                    label={{
+                        enabled: "On",
+                        disabled: "Off"
+                    }}
+                    icon={{
+                        enabled: "/images/icons/On.png",
+                        disabled: "/images/icons/Off.png"
+                    }}
+                />
             </GridCell>
             <GridCell row={{ start: 1, end: 2 }} column={{ start: 2, end: 3 }}>
                 <Info info={lights.local.info} />
@@ -88,6 +81,14 @@ function LightsPanel() {
                     size={"medium"}
                     label={{ default: "Scenes" }}
                     icon={{ default: "/images/icons/Scenes.png" }}
+                />
+                <ToggleButton
+                    onClick={() => {
+                        dispatch(windowsActions.lightsFunctionsWindowOpened());
+                    }}
+                    size={"medium"}
+                    label={{ default: "Functions" }}
+                    icon={{ default: "/images/icons/Function.png" }}
                 />
             </GridCell>
         </Grid>

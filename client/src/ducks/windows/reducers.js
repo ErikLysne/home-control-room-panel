@@ -3,7 +3,8 @@ import * as types from "./types";
 const initialState = {
     lights: {
         slidersWindowOpen: false,
-        kelvinWindowOpen: false
+        kelvinWindowOpen: false,
+        functionsWindowOpen: false
     }
 };
 
@@ -24,6 +25,12 @@ const windows = (state = initialState, action) => {
             break;
         case types.KELVIN_WINDOW_CLOSED:
             lights.kelvinWindowOpen = false;
+            break;
+        case types.FUNCTIONS_WINDOW_OPENED:
+            lights.functionsWindowOpen = true;
+            break;
+        case types.FUNCTIONS_WINDOW_CLOSED:
+            lights.functionsWindowOpen = false;
             break;
         default:
             break;

@@ -41,7 +41,7 @@ const Slider = styled.input`
 `;
 
 function LightSlider(props) {
-    const { property, value, isActive, backgroundImage } = props;
+    const { property, value, range, isActive, backgroundImage } = props;
     const handleValueChangeEvent = (event) => {
         props.onChange(parseInt(event.target.value));
     };
@@ -50,13 +50,13 @@ function LightSlider(props) {
         <Container isActive={isActive}>
             <LabelContainer>
                 <Label>{property}</Label>
-                <Label>{value}</Label>
+                <Label>{value + range.unit}</Label>
             </LabelContainer>
             <Slider
                 onChange={handleValueChangeEvent}
                 type="range"
-                min="1"
-                max="100"
+                min={range.min}
+                max={range.max}
                 disabled={!isActive}
                 value={value}
                 backgroundImage={backgroundImage}
