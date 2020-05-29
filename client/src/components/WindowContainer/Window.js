@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Draggable from "react-draggable";
 import styled, { keyframes } from "styled-components";
 import ToggleButton from "../ToggleButton";
 
@@ -8,9 +9,11 @@ const Container = styled.div`
     height: ${(props) =>
         props.windowTransitionState ? props.dimensions.height : 0}px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
     background-color: rgb(6, 31, 46);
     box-shadow: 0px 0px 5px 2px rgba(211, 226, 252, 0.75);
     opacity: 0.9;
@@ -118,32 +121,34 @@ function Window(props) {
         }, 1000);
     };
     return (
-        <Container
-            windowTransitionState={windowTransitionState}
-            dimensions={dimensions}
-            transitionDuration={transitionDuration}
-        >
-            {children}
-            <ButtonContainer>
-                <ToggleButton
-                    onClick={handleClickEvent}
-                    size="small"
-                    label={{
-                        default: "Close"
-                    }}
-                    icon={{
-                        default: "/images/icons/Close.png"
-                    }}
-                />
-            </ButtonContainer>
-            <OutlineContainerTop>
-                <OutlineTop />
-            </OutlineContainerTop>
-            <OutlineContainerBottom>
-                <OutlineBottom />
-            </OutlineContainerBottom>
-            <HeaderBar>{title}</HeaderBar>
-        </Container>
+        <Draggable handle=".handle">
+            <Container
+                windowTransitionState={windowTransitionState}
+                dimensions={dimensions}
+                transitionDuration={transitionDuration}
+            >
+                {children}
+                <ButtonContainer>
+                    <ToggleButton
+                        onClick={handleClickEvent}
+                        size="small"
+                        label={{
+                            default: "Close"
+                        }}
+                        icon={{
+                            default: "/images/icons/Close.png"
+                        }}
+                    />
+                </ButtonContainer>
+                <OutlineContainerTop>
+                    <OutlineTop />
+                </OutlineContainerTop>
+                <OutlineContainerBottom>
+                    <OutlineBottom />
+                </OutlineContainerBottom>
+                <HeaderBar className="handle">{title}</HeaderBar>
+            </Container>
+        </Draggable>
     );
 }
 

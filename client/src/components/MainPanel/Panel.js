@@ -115,8 +115,47 @@ const transform = (
     return transform;
 };
 
+const OutlineContainer = styled.div`
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+`;
+
+const OutlineContainerTop = styled(OutlineContainer)`
+    top: 0;
+`;
+
+const OutlineContainerBottom = styled(OutlineContainer)`
+    bottom: 0;
+`;
+
+const Outline = styled.div`
+    width: 75%;
+    height: 25px;
+    background-color: rgba(255, 255, 255, 0.25);
+`;
+
+const OutlineTop = styled(Outline)`
+    transform: perspective(100px) rotateX(-45deg);
+`;
+
+const OutlineBottom = styled(Outline)`
+    transform: perspective(100px) rotateX(45deg);
+`;
+
 function Panel(props) {
-    return <Container {...props}>{props.children}</Container>;
+    return (
+        <Container {...props}>
+            <OutlineContainerTop>
+                <OutlineTop />
+            </OutlineContainerTop>
+            <OutlineContainerBottom>
+                <OutlineBottom />
+            </OutlineContainerBottom>
+            {props.children}
+        </Container>
+    );
 }
 
 export default Panel;

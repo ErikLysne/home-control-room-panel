@@ -2,6 +2,7 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 
 const Button = styled.button`
+    position: relative;
     margin: auto 5px;
     border-style: none;
     color: rgb(200, 220, 230);
@@ -62,7 +63,12 @@ const LargeLabel = styled(Label)`
     font-size: 1.5rem;
 `;
 
-const MediumLabel = styled(Label)``;
+const MediumLabel = styled(Label)`
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.5rem;
+`;
 
 const SmallLabel = styled(Label)`
     width: 50%;
