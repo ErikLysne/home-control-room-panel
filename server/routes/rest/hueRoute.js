@@ -1,5 +1,5 @@
 import express from "express";
-import Hue from "../../hue";
+import Hue from "../../src/hue";
 
 const router = express.Router();
 
