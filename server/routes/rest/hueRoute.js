@@ -31,7 +31,8 @@ const sendHueBridgeErrorResponse = (res) => {
 };
 
 const sendHueInvalidGroupNameErrorResponse = (groupName, res) => {
-    res.status(400).send({
+    res.send({
+        status: false,
         error: "Group '" + groupName + "' was not found"
     });
 };

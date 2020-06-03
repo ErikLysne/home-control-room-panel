@@ -1,11 +1,15 @@
 import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema({
-    name: String,
     updated: Date,
+    name: {
+        type: String,
+        required: true
+    },
+    isEntrance: Boolean,
     light: {
-        groupId: Number,
-        groupName: String,
+        name: Number,
+        id: String,
         lights: [String],
         state: {
             on: Boolean,
@@ -13,13 +17,9 @@ const roomSchema = new mongoose.Schema({
             saturation: { type: Number, min: 0, max: 254 },
             brightness: { type: Number, min: 1, max: 254 },
             colorTemp: { type: Number, min: 153, max: 500 },
+            colormode: String,
             effect: String,
             alert: String
-        },
-        info: {
-            colormode: String,
-            allOn: Boolean,
-            anyOn: Boolean
         }
     },
     sensors: {
