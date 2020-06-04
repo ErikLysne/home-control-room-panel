@@ -18,9 +18,9 @@ export const discoverBridgeIpAddress = async (timeout) => {
             if (ipAddress) {
                 throw ipAddress;
             }
-            return Error("UPnP search failed");
+            return Error("UPnP search failed.");
         },
-        () => Error("UPnP search failed")
+        () => Error("UPnP search failed.")
     );
 
     const nupnpSearch = hue.discovery.nupnpSearch().then(
@@ -29,17 +29,34 @@ export const discoverBridgeIpAddress = async (timeout) => {
             if (ipAddress) {
                 throw ipAddress;
             }
-            return Error("N-UPnP search failed");
+            return Error("N-UPnP search failed.");
         },
-        () => Error("N-UPnP search failed")
+        () => Error("N-UPnP search failed.")
     );
 
     return Promise.all([upnpSearch, nupnpSearch]).then(
         () => {
-            throw Error("N-UPnP search and N-UPnP search failed");
+            throw Error("N-UPnP search and N-UPnP search failed.");
         },
         (results) => {
             return results;
         }
+    );
+};
+
+export const createUser = async (ipAddress, appName, deviceName) => {
+    const unauthenticatedUser = await hue.api.createLocal(ipAddress).connect();
+
+    console.log("tick");
+
+    return new Promise((resolve, reject) =>
+        unauthenticatedUser.users
+            .createUser(appName, deviceName)
+            .then((user) => {
+                resolve(user);
+            })
+            .catch((error) => {
+                reject(error);
+            })
     );
 };

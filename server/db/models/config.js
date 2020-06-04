@@ -1,11 +1,47 @@
 import mongoose from "mongoose";
 
 const configSchema = new mongoose.Schema({
-    updated: Date,
+    updated: {
+        type: Date,
+        default: () => new Date()
+    },
     hue: {
-        bridgeIpAddress: String,
-        username: String,
-        entertainmentAPIKey: String
+        bridge: {
+            ipAddress: {
+                type: String,
+                default: ""
+            },
+            username: {
+                type: String,
+                default: ""
+            },
+            clientkey: {
+                type: String,
+                default: ""
+            }
+        },
+        userCreation: {
+            appName: {
+                type: String,
+                default: ""
+            },
+            deviceName: {
+                type: String,
+                default: ""
+            },
+            timeRemaining: {
+                type: Number,
+                default: 0
+            },
+            ongoing: {
+                type: Boolean,
+                default: false
+            },
+            previousSuccessful: {
+                type: Boolean,
+                default: false
+            }
+        }
     }
 });
 
