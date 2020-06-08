@@ -1,5 +1,5 @@
 import express from "express";
-import Hue from "../../hue";
+import Hue from "../../src/hue";
 
 const router = express.Router();
 
@@ -31,7 +31,8 @@ const sendHueBridgeErrorResponse = (res) => {
 };
 
 const sendHueInvalidGroupNameErrorResponse = (groupName, res) => {
-    res.status(400).send({
+    res.send({
+        status: false,
         error: "Group '" + groupName + "' was not found"
     });
 };
