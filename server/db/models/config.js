@@ -1,10 +1,7 @@
 import mongoose from "mongoose";
 
 const configSchema = new mongoose.Schema({
-    updated: {
-        type: Date,
-        default: () => new Date()
-    },
+    updated: Date,
     hue: {
         bridge: {
             ipAddress: {

@@ -4,7 +4,6 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import Background from "./components/Background";
-import LogoBar from "./components/LogoBar";
 import MainContainer from "./components/MainContainer";
 import Sidebar from "./components/Sidebar";
 import MainPanel from "./components/MainPanel";
@@ -23,7 +22,6 @@ function App() {
                 <Sidebar />
                 <MainPanel />
             </MainContainer>
-            <LogoBar />
         </Provider>
     );
 }

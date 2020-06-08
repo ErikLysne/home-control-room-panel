@@ -5,7 +5,8 @@
     "main": "start.js",
     "scripts": {
         "test": "jest",
-        "start": "node start.js"
+        "start": "node start.js",
+        "watch": "nodemon start.js"
     },
     "author": "",
     "license": "ISC",

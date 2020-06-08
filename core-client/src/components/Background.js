@@ -1,5 +1,4 @@
 import React from "react";
-import Particles from "react-particles-js";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -10,24 +9,7 @@ const Container = styled.div`
 `;
 
 function Background() {
-    return (
-        <Container>
-            <Particles
-                width={"100vw"}
-                height={"100vh"}
-                params={{
-                    particles: {
-                        number: {
-                            value: 50
-                        },
-                        size: {
-                            value: 3
-                        }
-                    }
-                }}
-            />
-        </Container>
-    );
+    return <Container />;
 }
 
 export default Background;

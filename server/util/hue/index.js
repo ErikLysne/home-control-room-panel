@@ -47,8 +47,6 @@ export const discoverBridgeIpAddress = async (timeout) => {
 export const createUser = async (ipAddress, appName, deviceName) => {
     const unauthenticatedUser = await hue.api.createLocal(ipAddress).connect();
 
-    console.log("tick");
-
     return new Promise((resolve, reject) =>
         unauthenticatedUser.users
             .createUser(appName, deviceName)

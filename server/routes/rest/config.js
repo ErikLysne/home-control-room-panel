@@ -62,13 +62,17 @@ router
     .put((req, res) => {
         const { body } = req;
 
-        Config.updateOne({}, { ...body, updated: new Date() }, (error) => {
-            if (error) {
-                res.send(response(false, error.message));
-            } else {
-                res.send(response(true));
+        Config.updateOne(
+            {},
+            { $set: { ...body }, updated: new Date() },
+            (error) => {
+                if (error) {
+                    res.send(response(false, error.message));
+                } else {
+                    res.send(response(true));
+                }
             }
-        });
+        );
     })
     .delete((req, res) => {
         Config.deleteOne({}, (error) => {
@@ -128,6 +132,8 @@ router.route("/config/hue/:command").put((req, res) => {
                     {},
                     {
                         $set: {
+                            "hue.bridge.username": "",
+                            "hue.bridge.clientkey": "",
                             "hue.userCreation.appName": appName,
                             "hue.userCreation.deviceName": deviceName,
                             "hue.userCreation.timeRemaining": timeRemaining,
@@ -143,7 +149,7 @@ router.route("/config/hue/:command").put((req, res) => {
                     }
                 );
 
-                const timer = setInterval(() => {
+                const tick = () => {
                     if (timeRemaining === 0) {
                         clearInterval(timer);
                         Config.updateOne(
@@ -204,7 +210,10 @@ router.route("/config/hue/:command").put((req, res) => {
                             );
                         })
                         .catch(() => {});
-                }, 1000);
+                };
+
+                tick();
+                const timer = setInterval(tick, 1000);
             }
 
             break;
