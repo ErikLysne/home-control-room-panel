@@ -1,3 +1,7 @@
+// @flow
+import Room from "./rooms/entities";
+
+/*
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -17,3 +21,4 @@ app.use(rest.config);
 
 server.listen(8080);
 console.log("Started server on port 8080");
+*/

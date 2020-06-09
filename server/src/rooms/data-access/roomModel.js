@@ -1,12 +1,20 @@
 import mongoose from "mongoose";
 
 const roomSchema = new mongoose.Schema({
-    updated: Date,
+    updated: { type: Date, default: Date.now, required: true },
+    roomId: String,
     name: {
         type: String,
         required: true
     },
-    entrance: Boolean,
+    entrance: Boolean
+});
+
+const Room = mongoose.model("Room", roomSchema);
+
+export default Room;
+
+/*
     light: {
         name: Number,
         id: String,
@@ -29,8 +37,4 @@ const roomSchema = new mongoose.Schema({
             state: Boolean
         }
     }
-});
-
-const Room = mongoose.model("Room", roomSchema);
-
-export default Room;
+*/

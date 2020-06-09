@@ -4,9 +4,18 @@ module.exports = {
             "@babel/preset-env",
             {
                 targets: {
-                    node: "current",
-                },
-            },
+                    node: "current"
+                }
+            }
         ],
+        ["@babel/preset-flow"]
     ],
+    plugins: [
+        [
+            "@babel/plugin-proposal-class-properties",
+            {
+                loose: true
+            }
+        ]
+    ]
 };
